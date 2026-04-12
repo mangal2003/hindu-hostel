@@ -1,0 +1,31 @@
+<%- include('partials/head') %>
+    <%- include('partials/nav') %>
+
+        <main class="min-h-screen bg-zinc-950 flex items-center justify-center p-6 font-serif">
+            <div class="text-center">
+                <h1 class="text-[12rem] md:text-[18rem] font-bold text-zinc-800 leading-none select-none">404</h1>
+
+                <div class="relative -mt-24 md:-mt-40">
+                    <h2 class="text-3xl md:text-5xl text-white italic mb-4 tracking-tighter">Lost in the Hostel</h2>
+                    <div class="h-1 w-20 bg-red-700 mx-auto mb-8"></div>
+
+                    <p
+                        class="text-red-500 font-sans text-[10px] font-bold uppercase tracking-[0.1em] max-w-xs mx-auto leading-relaxed mb-10">
+                        The corridor you are looking for does not exist or has been restricted by Admins.
+                    </p>
+
+                    <div class="flex flex-col md:flex-row gap-4 justify-center font-sans">
+                        <a href="/"
+                            class="px-8 py-3 bg-zinc-900 border border-zinc-800 text-white text-[10px] font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all">
+                            Return to Portal
+                        </a>
+                        <button onclick="window.history.back()"
+                            class="px-8 py-3 text-zinc-500 text-[10px] font-bold uppercase tracking-widest hover:text-red-600 transition-colors">
+                            Go Back
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <%- include('partials/footer') %>

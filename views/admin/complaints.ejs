@@ -1,0 +1,104 @@
+<%- include('../partials/head') %>
+    <%- include('../partials/nav') %>
+        <%- include('../partials/flash') %>
+
+            <main class="min-h-screen bg-zinc-950 p-4 md:p-10 font-serif text-stone-50">
+                <div class="max-w-6xl mx-auto">
+                    <div class="mb-10">
+                        <h1
+                            class="text-4xl md:text-5xl tracking-tighter text-white border-b-4 border-red-700 inline-block pb-2">
+                            Complaint Registry
+                        </h1>
+                        <p class="text-zinc-500 font-sans font-bold tracking-[0.3em] text-[10px] uppercase mt-4">
+                            Hindu Hostel Digital Ledger
+                        </p>
+                    </div>
+
+                    <div class="flex items-center gap-2 m-6">
+                        <a href="/admin/dashboard"
+                            class="text-zinc-500 hover:text-red-600 transition-all text-[12px] font-sans font-bold uppercase tracking-[0.2em]">
+                            <i class="ri-arrow-left-line"></i> Back
+                        </a>
+                    </div>
+                    <p
+                        class="text-[10px] text-zinc-600 mb-4 md:hidden font-sans uppercase tracking-widest flex items-center gap-2">
+                        <i class="ri-arrow-left-right-line text-red-700"></i> Swipe to inspect records
+                    </p>
+
+                    <div class="bg-zinc-900 rounded-xl shadow-2xl border border-zinc-800 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse min-w-[800px]">
+                                <thead
+                                    class="bg-zinc-950 text-zinc-500 uppercase text-[10px] tracking-[0.2em] font-sans font-bold">
+                                    <tr>
+                                        <th class="p-5">Resident</th>
+                                        <th class="p-5">Room</th>
+                                        <th class="p-5">Classification</th>
+                                        <th class="p-5">Subject Header</th>
+                                        <th class="p-5 text-right">Current Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-zinc-300 font-sans">
+                                    <% if(complaints.length> 0) { %>
+                                        <% complaints.forEach(c=> { %>
+                                            <tr class="border-b border-zinc-800/50 hover:bg-zinc-800/60 transition-all cursor-pointer group"
+                                                onclick="window.location='/admin/complaints/<%= c._id %>'">
+
+                                                <td class="p-5">
+                                                    <div
+                                                        class="font-bold text-white group-hover:text-red-500 transition-colors">
+                                                        <%= c.student ? c.student.name : 'Unidentified' %>
+                                                    </div>
+                                                    <div class="text-[12px] text-zinc-600 uppercase tracking-tighter">
+                                                        Resident
+                                                    </div>
+                                                </td>
+
+                                                <td class="p-5 font-mono text-zinc-500 text-xs">
+                                                    <%= c.roomNumber %>
+                                                </td>
+
+                                                <td class="p-5">
+                                                    <span
+                                                        class="border border-zinc-700 bg-zinc-950 text-zinc-400 px-2 py-1 rounded text-[9px] font-bold uppercase tracking-widest">
+                                                        <%= c.category %>
+                                                    </span>
+                                                </td>
+
+                                                <td class="p-5 text-sm font-medium text-zinc-400 italic">
+                                                    "<%= c.subject %>"
+                                                </td>
+
+                                                <td class="p-5 text-right">
+                                                    <% let
+                                                        statusStyle="bg-amber-900/20 text-amber-500 border-amber-900/50"
+                                                        ; if(c.status==='In Progress' )
+                                                        statusStyle="bg-blue-900/20 text-blue-500 border-blue-900/50" ;
+                                                        if(c.status==='Resolved' )
+                                                        statusStyle="bg-emerald-900/20 text-emerald-500 border-emerald-900/50"
+                                                        ; %>
+                                                        <span
+                                                            class="<%= statusStyle %> px-3 py-1 border rounded-full text-[9px] font-bold uppercase whitespace-nowrap tracking-tighter">
+                                                            <%= c.status %>
+                                                        </span>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                                                <% } else { %>
+                                                    <tr>
+                                                        <td colspan="5" class="p-24 text-center text-zinc-400 italic">
+                                                            <i class="ri-archive-line text-5xl block mb-4 "></i>
+                                                            <span class="font-serif text-lg">The registry is currently
+                                                                clear.</span>
+                                                        </td>
+                                                    </tr>
+                                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+
+            <%- include('../partials/footer') %>

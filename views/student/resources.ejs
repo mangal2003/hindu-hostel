@@ -1,0 +1,131 @@
+<%- include('../partials/head') %>
+    <%- include('../partials/nav') %>
+        <%- include('../partials/flash') %>
+
+
+            <main class="min-h-screen bg-zinc-950 text-stone-50 pb-20 font-serif">
+                <header class="py-12 bg-zinc-900 border-b border-zinc-800 text-center relative overflow-hidden">
+                    <div class="relative z-10 max-w-2xl mx-auto px-6">
+                        <h1 class="text-5xl tracking-tighter italic text-white mb-6">The Academic Vault</h1>
+
+                        <div class="relative group font-sans">
+                            <i
+                                class="ri-search-line absolute left-5 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-red-600 transition-colors"></i>
+                            <input type="text" id="subjectSearch" onkeyup="searchVault()"
+                                placeholder="Search by subject name"
+                                class="w-full bg-zinc-950 border border-zinc-500 rounded-2xl py-5 pl-14 pr-6 text-white shadow-2xl focus:border-red-700 outline-none transition-all placeholder:text-zinc-400">
+                        </div>
+                    </div>
+                </header>
+
+                <div class="max-w-6xl mx-auto px-6 mt-16">
+                    <a href="/"
+                        class="text-zinc-500 hover:text-red-600 transition-all text-[12px] font-sans font-bold uppercase tracking-[0.2em] flex items-center gap-2 m-6">
+                        <i class="ri-arrow-left-line"></i> Back
+                    </a>
+                    <div id="vaultGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <% if (resources.length> 0) { %>
+                            <% resources.forEach(res=> { %>
+                                <div class="subject-card bg-zinc-900/40 border border-zinc-400 p-8 rounded-3xl hover:border-red-500/50 hover:bg-zinc-900 transition-all duration-500 group"
+                                    data-subject="<%= res.subject.toLowerCase() %>">
+
+                                    <div class="mb-6">
+                                        <h3
+                                            class="text-xl text-white italic group-hover:text-red-500 transition-colors">
+                                            <%= res.subject %>
+                                        </h3>
+                                    </div>
+
+                                    <div class="flex flex-col gap-3">
+                                        <% if(res.studyMaterial) { %>
+                                            <a href="<%= res.studyMaterial %>" target="_blank"
+                                                class="flex items-center justify-between p-3 rounded-xl bg-zinc-950 border border-zinc-600 text-white hover:text-red-500 hover:border-red-500 transition-all">
+                                                <span class="text-[9px] font-bold uppercase tracking-widest">Study
+                                                    Notes</span>
+                                                <i class="ri-arrow-right-up-line"></i>
+                                            </a>
+                                            <% } %>
+
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <% if(res.resources) { %>
+                                                        <a href="<%= res.resources %>" target="_blank"
+                                                            class="flex items-center justify-center gap-2 p-3 rounded-xl bg-zinc-950 border border-zinc-600 hover:border-blue-500 text-[9px] font-bold uppercase tracking-widest text-white hover:text-blue-500 transition-all">
+                                                            Resources
+                                                        </a>
+                                                        <% } %>
+                                                            <% if(res.previousPapers) { %>
+                                                                <a href="<%= res.previousPapers %>" target="_blank"
+                                                                    class="flex items-center justify-center gap-2 p-3 rounded-xl bg-zinc-950 border border-zinc-600 hover:border-emerald-500 text-[9px] font-bold uppercase tracking-widest text-white hover:text-emerald-500 transition-all">
+                                                                    PYQs
+                                                                </a>
+                                                                <% } %>
+                                                </div>
+                                    </div>
+
+                                    <% if (locals.user && (user.role==='warden' || user.role==='admin' )) { %>
+                                        <div class="mt-6 pt-6 border-t border-zinc-500 flex justify-end gap-4">
+                                            <a href="/admin/resources/edit/<%= res._id %>"
+                                                class="text-[9px] font-bold uppercase tracking-widest text-blue-400 hover:text-white transition-colors flex items-center gap-1">
+                                                <i class="ri-edit-line"></i> Edit
+                                            </a>
+                                            <form action="/admin/resources/delete/<%= res._id %>" method="POST"
+                                                onsubmit="return confirm('Archive this subject permanently?')">
+                                                <button type="submit"
+                                                    class="text-[9px] font-bold uppercase tracking-widest text-red-400 hover:text-red-600 transition-colors flex items-center gap-1">
+                                                    <i class="ri-delete-bin-line"></i> Delete
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <% } %>
+                                </div>
+                                <% }) %>
+                                    <% } else { %>
+                                        <div
+                                            class="col-span-full py-20 text-center border-2 border-dashed border-zinc-500 rounded-3xl">
+                                            <i class="ri-archive-drawer-line text-5xl text-zinc-400 mb-4 block"></i>
+                                            <h3
+                                                class="text-zinc-400 font-sans text-xs font-bold uppercase tracking-widest">
+                                                The
+                                                Vault is currently
+                                                empty</h3>
+                                            <% if (locals.user && (user.role==='warden' || user.role==='admin' )) { %>
+                                                <a href="/admin/resources/new"
+                                                    class="inline-block mt-6 text-[12px] text-red-600 font-bold hover:text-white transition-colors uppercase tracking-widest">
+                                                    <i class="ri-add-line"></i>Dispatch First Subject
+                                                </a>
+                                                <% } %>
+                                        </div>
+                                        <% } %>
+                    </div>
+
+                    <div id="noResults" class="hidden col-span-full py-20 text-center">
+                        <i class="ri-search-eye-line text-5xl text-zinc-400 mb-4 block"></i>
+                        <p class="text-zinc-400 font-sans text-xs uppercase tracking-[0.4em]">No matching subjects found
+                            in records</p>
+                    </div>
+
+
+                </div>
+            </main>
+
+            <script>
+                function searchVault() {
+                    const query = document.getElementById('subjectSearch').value.toLowerCase();
+                    const cards = document.querySelectorAll('.subject-card');
+                    let found = 0;
+
+                    cards.forEach(card => {
+                        const subject = card.getAttribute('data-subject');
+                        if (subject.includes(query)) {
+                            card.style.display = "block";
+                            found++;
+                        } else {
+                            card.style.display = "none";
+                        }
+                    });
+
+                    document.getElementById('noResults').style.display = found === 0 ? "block" : "none";
+                }
+            </script>
+
+            <%- include('../partials/footer') %>

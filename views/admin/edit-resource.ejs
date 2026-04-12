@@ -1,0 +1,63 @@
+<%- include('../partials/head') %>
+    <%- include('../partials/nav') %>
+        <%- include('../partials/flash') %>
+
+
+            <main class="min-h-screen bg-zinc-950 flex items-center justify-center p-6 font-serif">
+                <div class="bg-zinc-900 w-full max-w-xl rounded-2xl shadow-2xl border border-zinc-800 overflow-hidden">
+                    <div class="h-1.5 bg-emerald-700 w-full"></div>
+
+                    <div class="p-10 border-b border-zinc-800 bg-zinc-950/30">
+                        <h2 class="text-3xl text-white font-bold">Subject Dispatch</h2>
+                        <p class="text-zinc-400 text-[10px] font-bold uppercase tracking-widest mt-1 font-sans">Index
+                            materials by subject name directly</p>
+                    </div>
+
+                    <form action="/admin/resources/edit/<%= resource._id %>" method="POST"
+                        class="p-10 space-y-8 font-sans">
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase text-zinc-400 mb-2 tracking-widest">Full
+                                Subject Name</label>
+                            <input type="text" name="subject" required
+                                class="w-full bg-zinc-950 border border-zinc-800 rounded-xl py-4 px-4 text-white placeholder:text-zinc-400 focus:border-emerald-700 outline-none transition-all"
+                                placeholder="e.g., Engineering Physics..." value="<%= resource.subject %>">
+                        </div>
+
+                        <div class="space-y-5">
+                            <div>
+                                <label
+                                    class="block text-[10px] font-bold uppercase text-zinc-400 mb-2 tracking-widest">Study
+                                    Notes
+                                    Link</label>
+                                <input type="url" name="studyMaterial"
+                                    class="w-full bg-zinc-950 border border-zinc-800 rounded-xl py-4 px-4 text-white placeholder:text-zinc-400 focus:border-emerald-700 outline-none transition-all"
+                                    placeholder="Drive Link..." value="<%= resource.studyMaterial %>">
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[10px] font-bold uppercase text-zinc-400 mb-2 tracking-widest">Reference
+                                    Books/Resources</label>
+                                <input type="url" name="resources"
+                                    class="w-full bg-zinc-950 border border-zinc-800 rounded-xl py-4 px-4 text-white placeholder:text-zinc-400 focus:border-emerald-700 outline-none transition-all"
+                                    placeholder="Drive Link..." value="<%= resource.resources %>">
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[10px] font-bold uppercase text-zinc-400 mb-2 tracking-widest">Previous
+                                    Year
+                                    Question Papers</label>
+                                <input type="url" name="previousPapers"
+                                    class="w-full bg-zinc-950 border border-zinc-800 rounded-xl py-4 px-4 text-white placeholder:text-zinc-400 focus:border-emerald-700 outline-none transition-all"
+                                    placeholder="Drive Link..." value="<%= resource.previousPapers %>">
+                            </div>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full bg-emerald-500 text-white font-bold py-3 rounded-xl hover:text-black transition-all duration-500 text-[12px] uppercase shadow-lg shadow-red-950/20">
+                            Add Subject
+                        </button>
+                    </form>
+                </div>
+            </main>
+
+            <%- include('../partials/footer') %>

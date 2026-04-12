@@ -1,0 +1,46 @@
+<%- include('../partials/head') %>
+    <%- include('../partials/nav') %>
+        <%- include('../partials/flash') %>
+
+            <main class="flex-grow bg-stone-950 p-4 md:p-12 text-white">
+                <div class="max-w-4xl mx-auto">
+                    <div class="border-l-4 border-red-700 pl-6 mb-12">
+                        <h2 class="text-4xl font-serif mb-2">Welcome, <%= user.name %>
+                        </h2>
+                        <div class="flex gap-2 text-zinc-400 text-sm uppercase tracking-widest flex-wrap">
+                            <span style="display: block;"><i class="ri-door-open-line text-red-600"></i>Room: <%=
+                                    user.roomNumber %></span>
+                            <span style="display: block;"><i class="ri-shield-user-line text-red-600"></i>
+                                Status: Resident</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <a href="/student/complaints"
+                            class="bg-zinc-900 border border-zinc-800 p-8 rounded-xl hover:border-red-700 hover:bg-zinc-800 transition-all duration-300 group">
+                            <div
+                                class="w-12 h-12 bg-red-900/20 rounded-lg flex items-center justify-center mb-4 group-hover:bg-red-700 transition-colors">
+                                <i class="ri-tools-line text-red-600 text-2xl group-hover:text-white"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">File a Complaint</h4>
+                            <p class="text-zinc-500 text-sm">Report issues with electricity, plumbing, or mess
+                                facilities
+                                directly to the warden.</p>
+                        </a>
+
+                        <a href="/student/profile"
+                            class="bg-zinc-900 border border-zinc-800 p-8 rounded-xl hover:border-red-700 hover:bg-zinc-800 transition-all duration-300 group">
+                            <div
+                                class="w-12 h-12 bg-red-900/20 rounded-lg flex items-center justify-center mb-4 group-hover:bg-red-700 transition-colors">
+                                <i class="ri-user-settings-line text-red-600 text-2xl group-hover:text-white"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">My Profile</h4>
+                            <p class="text-zinc-500 text-sm">Update your contact information or change your portal
+                                password.
+                            </p>
+                        </a>
+                    </div>
+                </div>
+            </main>
+
+            <%- include('../partials/footer') %>

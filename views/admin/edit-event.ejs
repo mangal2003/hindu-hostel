@@ -1,0 +1,47 @@
+<%- include('../partials/head') %>
+    <%- include('../partials/nav') %>
+
+        <main class="min-h-screen bg-zinc-950 p-6 md:p-12 font-serif text-white">
+            <div class="max-w-2xl mx-auto">
+                <h2 class="text-3xl mb-8">Refine Chronicle: <%= event.title %>
+                </h2>
+
+                <form action="/admin/events/edit/<%= event._id %>" method="POST"
+                    class="bg-zinc-900 p-8 rounded-xl border border-zinc-800 space-y-6">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase text-zinc-500 mb-2 font-sans">Event
+                            Title</label>
+                        <input type="text" name="title" value="<%= event.title %>" required
+                            class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 outline-none focus:border-red-700 font-sans">
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase text-zinc-500 mb-2 font-sans">Chronicle
+                            Description</label>
+                        <textarea name="description" required
+                            class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 h-40 outline-none focus:border-red-700 font-sans text-sm"><%= event.description %></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label
+                                class="block text-[10px] font-bold uppercase text-zinc-500 mb-2 font-sans">Winners</label>
+                            <input type="text" name="winners" value="<%= event.winners.join(', ') %>"
+                                class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 font-sans text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase text-zinc-500 mb-2 font-sans">Chief
+                                Guests</label>
+                            <input type="text" name="chiefGuests" value="<%= event.chiefGuests.join(', ') %>"
+                                class="w-full bg-zinc-950 border border-zinc-800 rounded p-3 font-sans text-sm">
+                        </div>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-red-700 text-white font-bold py-4 rounded hover:bg-red-600 transition-all tracking-widest text-[10px] font-sans">
+                        UPDATE CHRONICLE
+                    </button>
+                </form>
+            </div>
+        </main>
+        <%- include('../partials/footer') %>

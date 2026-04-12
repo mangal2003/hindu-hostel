@@ -1,0 +1,92 @@
+<%- include('../partials/head') %>
+    <%- include('../partials/nav') %>
+        <%- include('../partials/flash') %>
+
+            <main class="flex-grow bg-zinc-950 p-6 md:p-12 font-serif text-stone-50">
+                <div class="max-w-2xl mx-auto">
+
+                    <div class="flex justify-between items-end mb-10 border-b border-zinc-900 pb-6">
+                        <div>
+                            <h2 class="text-4xl md:text-5xl tracking-tighter text-white"> <i
+                                    class="ri-user-add-line text-4xl md:text-5xl text-red-500"></i> New Resident</h2>
+                            <p class="text-red-600 font-sans font-bold tracking-[0.3em] text-[10px] uppercase mt-2">
+                                Official Enrollment Portal
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-800 overflow-hidden">
+                        <div class="p-6 bg-zinc-800/30 border-b border-zinc-800 flex items-center gap-3">
+                            <span class="h-2 w-2 rounded-full bg-red-600 animate-pulse"></span>
+                            <span
+                                class="text-[10px] font-sans font-bold tracking-widest text-zinc-400 uppercase">Awaiting
+                                Authorization</span>
+                        </div>
+
+                        <form action="/admin/register-student" method="POST" class="p-8 md:p-10 space-y-8 font-sans">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                                <div class="md:col-span-2">
+                                    <label
+                                        class="block text-[10px] font-bold text-zinc-400 uppercase mb-3 tracking-widest">Legal
+                                        Full Name</label>
+                                    <input type="text" name="name" placeholder="Student Name" required
+                                        class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-4 text-white focus:border-red-700 outline-none transition-all placeholder:text-zinc-400">
+                                </div>
+
+                                <div class="md:col-span-2">
+                                    <label
+                                        class="block text-[10px] font-bold text-zinc-400 uppercase mb-3 tracking-widest">Student
+                                        Email</label>
+                                    <input type="email" name="email" placeholder="student@gmail.com" required
+                                        class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-4 text-white focus:border-red-700 outline-none transition-all placeholder:text-zinc-400">
+                                </div>
+
+                                <div>
+                                    <label
+                                        class="block text-[10px] font-bold text-zinc-400 uppercase mb-3 tracking-widest">Enrollment
+                                        No.</label>
+                                    <input type="text" name="enrollmentNumber" placeholder="U101XXXX" required
+                                        class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-4 text-white focus:border-red-700 outline-none transition-all placeholder:text-zinc-400">
+                                </div>
+
+                                <div>
+                                    <label
+                                        class="block text-[10px] font-bold text-zinc-400 uppercase mb-3 tracking-widest">Room
+                                        Allocation</label>
+                                    <input type="text" name="roomNumber" placeholder="Room Number" required
+                                        class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-4 text-white focus:border-red-700 outline-none transition-all placeholder:text-zinc-400">
+                                </div>
+                            </div>
+
+                            <div class="bg-zinc-950 border-l-2 border-red-700 p-5 rounded-r-lg">
+                                <div class="flex items-start gap-3">
+                                    <i class="ri-shield-keyhole-line text-red-600 mt-0.5"></i>
+                                    <p class="text-[11px] text-zinc-400 leading-relaxed">
+                                        <span class="text-red-500 font-bold">IMPORTANT:</span> A temporary link
+                                        will be
+                                        generated and sent to resident's email address.
+                                        The resident will be required to establish a permanent credential upon their
+                                        first digital entry. Ask them to check email inbox (or spam folder) and activate
+                                        their accounts.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <button type="submit"
+                                class="w-full bg-red-700 text-white font-bold py-5 rounded-xl hover:bg-white hover:text-black transition-all tracking-[0.3em] text-[10px] shadow-lg uppercase">
+                                Authorize Resident Entry
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="mt-8 text-center">
+                        <a href="/admin/dashboard"
+                            class="text-zinc-600 hover:text-white transition-all text-[10px] font-sans font-bold uppercase tracking-widest">
+                            <i class="ri-arrow-left-line"></i> Cancel and Return to Desk
+                        </a>
+                    </div>
+                </div>
+            </main>
+
+            <%- include('../partials/footer') %>

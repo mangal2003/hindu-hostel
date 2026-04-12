@@ -1,0 +1,192 @@
+<nav class="main-nav">
+    <div class="nav-container">
+        <a href="/">
+            <div class="nav-branding">
+                <i class="ri-government-line logo-icon"></i>
+                <h1 class="logo-text uppercase font-serif">
+                    <span class="text-red">Hindu</span> Hostel
+                </h1>
+            </div>
+        </a>
+
+        <div class="desktop-links">
+            <a href="/" class="nav-link"><i class="ri-home-2-fill"></i> Home</a>
+            <a href="/hostel-events" class="nav-link"><i class="ri-calendar-event-line"></i> Events</a>
+            <a href="/history" class="nav-link"><i class="ri-history-line"></i> History</a>
+
+            <div class="portal-divider"></div>
+
+            <% if (locals.user) { %>
+                <% if (user.role==='admin' || user.role==='warden' ) { %>
+                    <a href="/admin/dashboard" class="nav-link"><i class="ri-dashboard-line"></i> Admin Desk</a>
+                    <% } else { %>
+                        <a href="/student/dashboard" class="nav-link"><i class="ri-dashboard-line"></i> Dashboard</a>
+                        <% } %>
+
+                            <a href="/logout" class="nav-link logout">Logout</a>
+                            <% } else { %>
+                                <a href="/login" class="btn-login"><i class="ri-login-box-line"></i> LOGIN</a>
+                                <% } %>
+        </div>
+
+        <button class="mobile-toggle" id="mobile-toggle">
+            <i class="ri-menu-3-line"></i>
+        </button>
+    </div>
+
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="/" class="nav-link"><i class="ri-home-2-fill"></i> Home</a>
+        <a href="/hostel-events" class="nav-link"><i class="ri-calendar-event-line"></i> Events</a>
+        <a href="/history" class="nav-link"><i class="ri-history-line"></i> History</a>
+        <% if (locals.user) { %>
+            <% if (user.role==='admin' || user.role==='warden' ) { %>
+                <a href="/admin/dashboard" class="nav-link"><i class="ri-dashboard-line"></i> Admin Desk</a>
+                <% } else { %>
+                    <a href="/student/dashboard" class="nav-link"><i class="ri-dashboard-line"></i> Dashboard</a>
+                    <% } %>
+
+                        <a href="/logout" class="nav-link logout">Logout</a>
+                        <% } else { %>
+                            <a href="/login"><i class="ri-login-box-line"></i> Login</a>
+                            <% } %>
+    </div>
+</nav>
+
+<style>
+    .main-nav {
+        background-color: #18181b;
+        border-bottom: 4px solid #b91c1c;
+        color: white;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        padding: 0.75rem 1rem;
+    }
+
+    .nav-container {
+        max-width: 1500px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .nav-branding {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .logo-icon {
+        color: #b91c1c;
+        font-size: 1.8rem;
+    }
+
+    .logo-text {
+        font-size: 1.25rem;
+        font-weight: 700;
+        letter-spacing: -0.05em;
+    }
+
+    .text-red {
+        color: #b91c1c;
+    }
+
+    .desktop-links {
+        display: none;
+    }
+
+    .nav-link {
+        color: #a8a29e;
+        text-decoration: none;
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        transition: 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .nav-link:hover {
+        color: white;
+    }
+
+    .portal-divider {
+        border-left: 1px solid #3f3f46;
+        height: 20px;
+        margin: 0 10px;
+    }
+
+    .btn-login {
+        background-color: #b91c1c;
+        color: white;
+        padding: 0.5rem 1.25rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .btn-login:hover {
+        background-color: white;
+        color: #b91c1c;
+    }
+
+    .mobile-toggle {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+    .mobile-menu {
+        display: none;
+        flex-direction: column;
+        background-color: #18181b;
+        padding: 1rem;
+        gap: 1rem;
+        border-top: 1px solid #27272a;
+    }
+
+    .mobile-menu a {
+        color: white;
+        text-decoration: none;
+        font-size: 0.9rem;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #27272a;
+    }
+
+    .logout {
+        color: #ef4444 !important;
+    }
+
+    @media (min-width: 940px) {
+        .desktop-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .mobile-toggle {
+            display: none;
+        }
+
+        .mobile-menu {
+            display: none !important;
+        }
+    }
+</style>
+
+<script>
+    const toggleBtn = document.getElementById('mobile-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    toggleBtn.addEventListener('click', () => {
+        if (mobileMenu.style.display === 'flex') {
+            mobileMenu.style.display = 'none';
+        } else {
+            mobileMenu.style.display = 'flex';
+        }
+    });
+</script>

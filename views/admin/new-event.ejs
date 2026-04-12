@@ -1,0 +1,82 @@
+<%- include('../partials/head') %>
+    <%- include('../partials/nav') %>
+        <%- include('../partials/flash') %>
+
+            <main class="min-h-screen bg-zinc-950 p-6 md:p-12 font-serif text-stone-50">
+                <div class="max-w-2xl mx-auto">
+                    <a href="/hostel-events"
+                        class="text-zinc-500 hover:text-red-600 transition-all text-[10px] font-sans font-bold uppercase tracking-[0.2em] flex items-center gap-2 mb-6">
+                        <i class="ri-arrow-left-line"></i> Back
+                    </a>
+
+                    <div class="mb-10">
+                        <h2 class="text-4xl tracking-tighter text-white">Record New Event</h2>
+                        <p class="text-red-600 font-sans font-bold tracking-[0.3em] text-[10px] uppercase mt-2">
+                            Preserving the Hindu Hostel Legacy
+                        </p>
+                    </div>
+
+                    <form action="/admin/events/new" method="POST" enctype="multipart/form-data"
+                        class="bg-zinc-900 p-8 md:p-10 rounded-2xl shadow-2xl border border-zinc-800 space-y-8">
+
+                        <div>
+                            <label
+                                class="block text-[10px] font-bold uppercase text-zinc-500 mb-3 tracking-widest font-sans">Formal
+                                Event Title</label>
+                            <input type="text" name="title" placeholder="Event Title" required
+                                class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-4 text-white outline-none focus:border-red-700 font-sans transition-all placeholder:text-zinc-400">
+                        </div>
+
+                        <div>
+                            <label
+                                class="block text-[10px] font-bold uppercase text-zinc-500 mb-3 tracking-widest font-sans">Visual
+                                Documentation (4-10 Photos)</label>
+                            <div
+                                class="relative group h-[80px] rounded-lg bg-zinc-950 border border-dashed border-zinc-600">
+                                <input type="file" name="images" multiple required
+                                    class="w-full  p-4  text-sm text-zinc-500 font-sans cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-[10px] file:font-bold file:uppercase file:bg-red-900/20 file:text-red-500 hover:border-red-900/50 transition-all">
+                                <p
+                                    class="absolute bottom-2 right-2 text-[10px] text-yellow-500 font-sans uppercase pointer-events-none">
+                                    Format: JPG, PNG, WEBP</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label
+                                class="block text-[10px] font-bold uppercase text-zinc-500 mb-3 tracking-widest font-sans">Chronicle
+                                Description</label>
+                            <textarea name="description"
+                                placeholder="Describe the significance and atmosphere of the event..." required
+                                class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-4 h-40 text-white outline-none focus:border-red-700 font-sans transition-all placeholder:text-zinc-400 italic min-h-[180px]"></textarea>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label
+                                    class="block text-[10px] font-bold uppercase text-zinc-500 mb-3 tracking-widest font-sans">Winners
+                                    (Comma separated if>1)</label>
+                                <input type="text" name="winners" placeholder="Name of winners..."
+                                    class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-4 text-white font-sans outline-none focus:border-red-700 transition-all placeholder:text-zinc-400">
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[10px] font-bold uppercase text-zinc-500 mb-3 tracking-widest font-sans">Dignitaries
+                                    / Guests</label>
+                                <input type="text" name="chiefGuests" placeholder="e.g. Honorable VC"
+                                    class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-4 text-white font-sans outline-none focus:border-red-700 transition-all placeholder:text-zinc-400">
+                            </div>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full bg-red-700 text-white font-bold py-5 rounded-xl hover:bg-white hover:text-black transition-all tracking-[0.3em] text-[10px] font-sans shadow-lg uppercase">
+                            Commit to History
+                        </button>
+                    </form>
+
+                    <p class="mt-8 text-center text-zinc-400 text-[10px] font-sans uppercase tracking-[0.1em]">
+                        This record will be permanently archived in the Hostel Chronicles.
+                    </p>
+                </div>
+            </main>
+
+            <%- include('../partials/footer') %>

@@ -1,0 +1,99 @@
+<%- include('../partials/head') %>
+    <%- include('../partials/nav') %>
+        <%- include('../partials/flash') %>
+
+            <main class="flex-grow bg-zinc-950 p-6 md:p-12 font-serif text-stone-50">
+                <div class="max-w-4xl mx-auto">
+
+                    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-12 gap-8">
+                        <div>
+                            <h2
+                                class="text-4xl md:text-5xl tracking-tighter text-white border-b-4 border-red-700 inline-block pb-2">
+                                Authority Management
+                            </h2>
+                            <p class="text-zinc-500 font-sans font-bold tracking-[0.3em] text-[10px] uppercase mt-4">
+                                Staff Hierarchy & Permissions
+                            </p>
+                        </div>
+
+                        <form action="/admin/add-role" method="POST" class="flex gap-2 w-full lg:w-auto font-sans">
+                            <input type="text" name="identifier" placeholder="Email or Enrollment #" required
+                                class="flex-grow lg:w-64 bg-zinc-900 text-red-500 border border-zinc-800 rounded-lg px-4 py-3 text-xs focus:border-red-700 outline-none placeholder:text-zinc-400 transition-all">
+                            <button
+                                class="bg-red-700 text-white px-6 py-3 rounded-lg text-[10px] font-bold hover:bg-white hover:text-black transition-all tracking-widest uppercase">
+                                ADD ADMIN
+                            </button>
+                        </form>
+                    </div>
+                    <div class="flex items-center gap-2 m-6">
+                        <a href="/admin/dashboard"
+                            class="text-zinc-500 hover:text-red-600 transition-all text-[12px] font-sans font-bold uppercase tracking-[0.2em]">
+                            <i class="ri-arrow-left-line"></i> Back
+                        </a>
+                    </div>
+                    <div class="bg-zinc-900 rounded-2xl shadow-2xl border border-zinc-600 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead
+                                    class="bg-zinc-950 text-zinc-400 text-[10px] uppercase font-bold tracking-[0.2em] font-sans">
+                                    <tr>
+                                        <th class="p-5">Official Name</th>
+                                        <th class="p-5">Credential/Contact</th>
+                                        <th class="p-5 text-right">Access Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-zinc-300 font-sans">
+                                    <% admins.forEach(adm=> { %>
+                                        <tr
+                                            class="border-b border-zinc-800/50 hover:bg-zinc-800/40 transition-all <%= adm.role === 'warden' ? 'bg-red-950/10' : '' %>">
+
+                                            <td class="p-5">
+                                                <div class="font-bold text-white whitespace-nowrap text-base">
+                                                    <%= adm.name %>
+                                                </div>
+                                                <div class="text-[9px] font-bold uppercase tracking-widest mt-1">
+                                                    <% if(adm.role==='warden' ) { %>
+                                                        <span class="text-red-600 flex items-center gap-1">
+                                                            <i class="ri-vip-crown-fill text-xs"></i> Head Warden
+                                                        </span>
+                                                        <% } else { %>
+                                                            <!-- <i class="ri-vip-crown-fill text-xs"></i> -->
+                                                            <span class="text-yellow-500">Admin HH</span>
+                                                            <% } %>
+                                                </div>
+                                            </td>
+
+                                            <td class="p-5 text-sm text-zinc-500 italic">
+                                                <%= adm.email %>
+                                            </td>
+
+                                            <td class="p-5 text-right">
+                                                <% if(adm.role !=='warden' ) { %>
+                                                    <form action="/admin/remove-role/<%= adm._id %>" method="POST"
+                                                        onsubmit="return confirm('Revoke administrative access for this user?')">
+                                                        <button
+                                                            class="text-zinc-600 hover:text-red-600 transition-colors flex items-center gap-1 ml-auto text-[10px] font-bold tracking-tighter uppercase">
+                                                            <i class="ri-shield-user-line text-lg"></i> REVOKE ACCESS
+                                                        </button>
+                                                    </form>
+                                                    <% } else { %>
+                                                        <div class="flex items-center justify-end gap-2 text-zinc-500">
+                                                            <i class="ri-lock-fill text-lg"></i>
+                                                        </div>
+                                                        <% } %>
+                                            </td>
+
+                                        </tr>
+                                        <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <p class="mt-6 text-center text-zinc-400 text-[12px] font-sans uppercase tracking-[0.1em]">
+                        Digital Signature Required for All Modifications
+                    </p>
+                </div>
+            </main>
+
+            <%- include('../partials/footer') %>

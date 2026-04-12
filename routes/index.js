@@ -1,0 +1,238 @@
+const express = require("express");
+const router = express.Router();
+const passport = require("passport");
+const User = require("../models/User");
+const bcrypt = require("bcrypt");
+const Event = require("../models/Event");
+const { isAdmin, isLoggedIn, isWarden } = require("../middleware/auth");
+const { sendResetEmail } = require("../utils/mailer");
+const crypto = require("crypto");
+const Announcement = require("../models/Announcement");
+const Resource = require("../models/Resource");
+
+router.get("/", async (req, res) => {
+  try {
+    const announcements = await Announcement.find().sort("-createdAt").limit(4);
+
+    res.render("index", {
+      title: "Hindu Hostel | Home",
+      hostelName: "Hindu Hostel, Prayagraj",
+      announcements: announcements,
+    });
+  } catch (err) {
+    console.error("Home Route Error:", err);
+    res.render("index", {
+      title: "Hindu Hostel | Home",
+      hostelName: "Hindu Hostel, Prayagraj",
+      announcements: [],
+    });
+  }
+});
+
+router.get("/hostel-events", isLoggedIn, async (req, res) => {
+  try {
+    const events = await Event.find().sort({ date: -1 });
+    res.render("events", {
+      title: "Hostel Events | Hindu Hostel",
+      events: events,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error loading history chronicles.");
+  }
+});
+
+router.get("/student/academic-vault", isLoggedIn, async (req, res) => {
+  try {
+    const resources = await Resource.find().sort("subject");
+    res.render("student/resources", {
+      title: "Academic Vault | Hindu Hostel",
+      resources,
+    });
+  } catch (err) {
+    res.redirect("/");
+  }
+});
+
+router.get("/history", async (req, res) => {
+  res.render("history", {
+    title: "Legacy & History | Hindu Hostel",
+  });
+});
+
+router.get("/login", (req, res) => {
+  res.render("login", { title: "Login | Hindu Hostel" });
+});
+
+router.post("/login", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) return next(err);
+
+    if (!user) {
+      req.flash("error", info.message);
+      return res.redirect("/login");
+    }
+
+    req.logIn(user, (err) => {
+      if (err) return next(err);
+
+      req.flash("success_msg", `Welcome back, ${user.name}!`);
+      const redirectPath =
+        user.role === "admin" || user.role === "warden"
+          ? "/admin/dashboard"
+          : "/student/dashboard";
+      return res.redirect(redirectPath);
+    });
+  })(req, res, next);
+});
+
+router.get("/logout", (req, res, next) => {
+  req.logout((err) => {
+    if (err) return next(err);
+    req.flash("success_msg", "You are logged out.");
+    res.redirect("/");
+  });
+});
+
+router.get("/verify/:token", async (req, res) => {
+  try {
+    const user = await User.findOne({
+      verificationToken: req.params.token,
+      tokenExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      req.flash(
+        "error_msg",
+        "Link expired or invalid. Please contact the Warden.",
+      );
+      return res.redirect("/login");
+    }
+
+    res.render("set-password", {
+      title: "Activate Account",
+      token: req.params.token,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Verification Error.");
+  }
+});
+
+router.post("/activate-account", async (req, res) => {
+  try {
+    const { token, password, confirmPassword } = req.body;
+
+    if (password !== confirmPassword) {
+      req.flash("error_msg", "Passwords do not match.");
+      return res.redirect("back");
+    }
+
+    const user = await User.findOne({
+      verificationToken: token,
+      tokenExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      req.flash("error_msg", "Invalid or expired session.");
+      return res.redirect("/login");
+    }
+
+    user.password = await bcrypt.hash(password, 10);
+    user.isVerified = true;
+    user.verificationToken = undefined;
+    user.tokenExpires = undefined;
+
+    await user.save();
+
+    req.flash(
+      "success_msg",
+      "Account activated successfully! You can now log in.",
+    );
+    res.redirect("/login");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Account activation failed.");
+  }
+});
+
+router.get("/forgot-password", (req, res) => {
+  res.render("forgot-password", { title: "Reset Access" });
+});
+
+router.post("/forgot-password", async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      req.flash(
+        "error_msg",
+        "If an account exists with that email, a link has been sent.",
+      );
+      return res.redirect("/forgot-password");
+    }
+
+    const token = crypto.randomBytes(32).toString("hex");
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = Date.now() + 3600000;
+    await user.save();
+
+    await sendResetEmail(user.email, user.name, token);
+
+    req.flash("success_msg", "Check your inbox for the reset link.");
+    res.redirect("/login");
+  } catch (err) {
+    console.error(err);
+    res.redirect("/forgot-password");
+  }
+});
+
+router.get("/reset-password/:token", async (req, res) => {
+  const user = await User.findOne({
+    resetPasswordToken: req.params.token,
+    resetPasswordExpires: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    req.flash("error_msg", "Password reset token is invalid or has expired.");
+    return res.redirect("/forgot-password");
+  }
+
+  res.render("reset-password", {
+    token: req.params.token,
+    title: "Set New Password",
+  });
+});
+
+router.post("/reset-password/:token", async (req, res) => {
+  try {
+    const user = await User.findOne({
+      resetPasswordToken: req.params.token,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      req.flash("error_msg", "Token expired.");
+      return res.redirect("/forgot-password");
+    }
+
+    if (req.body.password !== req.body.confirmPassword) {
+      req.flash("error_msg", "Passwords do not match.");
+      return res.redirect("back");
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(req.body.password, salt);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    req.flash("success_msg", "Password reset successful. You may now login.");
+    res.redirect("/login");
+  } catch (err) {
+    res.redirect("back");
+  }
+});
+
+module.exports = router;

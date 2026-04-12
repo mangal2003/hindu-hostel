@@ -1,0 +1,122 @@
+<%- include('../partials/head') %>
+    <%- include('../partials/nav') %>
+        <%- include('../partials/flash') %>
+
+            <main class="flex-grow bg-stone-950 p-6 md:p-12 text-white">
+                <div class="max-w-5xl mx-auto">
+
+                    <div class="border-l-4 border-red-700 pl-6 mb-12 flex justify-between items-end">
+                        <div>
+                            <h2 class="text-4xl font-serif mb-2">Complaint Portal</h2>
+                            <p class="text-zinc-500 uppercase tracking-widest text-xs">Report & Track Issues</p>
+                        </div>
+                        <a href="/student/dashboard" class="text-red-500 hover:text-white transition-colors text-sm">
+                            <i class="ri-arrow-left-line"></i> Back
+                        </a>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+
+                        <div class="lg:col-span-1">
+                            <div class="bg-zinc-900 border border-zinc-800 p-8 rounded-xl">
+                                <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                                    <i class="ri-edit-line text-red-600"></i> New Complaint
+                                </h3>
+
+                                <form action="/student/complaints/new" method="POST" class="space-y-5">
+                                    <div>
+                                        <label
+                                            class="block text-xs text-zinc-500 mb-2 uppercase tracking-tighter">Category</label>
+                                        <select name="category" required
+                                            class="w-full bg-stone-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-red-700 outline-none transition-all">
+                                            <option value="Electricity">Electricity</option>
+                                            <option value="Cleaning">Cleaning</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label
+                                            class="block text-xs text-zinc-500 mb-2 uppercase tracking-tighter">Subject</label>
+                                        <input type="text" name="subject" placeholder="Short title of the issue"
+                                            required
+                                            class="w-full bg-stone-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-red-700 outline-none transition-all">
+                                    </div>
+
+                                    <div>
+                                        <label
+                                            class="block text-xs text-zinc-500 mb-2 uppercase tracking-tighter">Description</label>
+                                        <textarea name="description" rows="4"
+                                            style="resize:vertical; min-height: 150px;"
+                                            placeholder="Explain the issue in detail..." required
+                                            class="w-full bg-stone-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-red-700 outline-none transition-all"></textarea>
+                                    </div>
+
+                                    <button type="submit"
+                                        class="w-full bg-red-700 hover:bg-red-600 text-white font-bold py-3 rounded-lg transition-all tracking-widest text-sm">
+                                        SUBMIT COMPLAINT
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-2">
+                            <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                                <i class="ri-history-line text-red-600"></i> Recent History
+                            </h3>
+
+                            <div class="space-y-4">
+                                <% if(complaints.length> 0) { %>
+                                    <% complaints.forEach(c=> { %>
+                                        <div
+                                            class="bg-zinc-900/50 border border-zinc-800 p-5 md:p-6 rounded-xl flex flex-col md:flex-row md:justify-between md:items-center gap-4 group hover:border-zinc-700 transition-all">
+
+                                            <div class="min-w-0 flex-grow">
+                                                <div class="flex flex-wrap items-center gap-2 mb-2">
+                                                    <span
+                                                        class="text-[10px] font-bold px-2 py-0.5 rounded bg-zinc-800 text-zinc-400 uppercase tracking-widest">
+                                                        <%= c.category %>
+                                                    </span>
+                                                    <h5 class="font-bold text-lg text-white leading-tight break-words">
+                                                        <%= c.subject %>
+                                                    </h5>
+                                                </div>
+
+                                                <p
+                                                    class="text-zinc-500 text-sm line-clamp-2 md:line-clamp-none mb-3 md:mb-0">
+                                                    <%= c.description %>
+                                                </p>
+
+                                                <span
+                                                    class="text-[10px] text-blue-500 uppercase tracking-widest block mt-2">
+                                                    <%= c.createdAt.toDateString() %>
+                                                </span>
+                                            </div>
+
+                                            <div class="flex-shrink-0 self-start md:self-center">
+                                                <span
+                                                    class="px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest whitespace-nowrap inline-block min-w-[100px] text-center
+                                                    <%= c.status === 'Pending' ? 'bg-amber-900/20 text-amber-500 border border-amber-900/50' : 
+                                                       c.status === 'In Progress' ? 'bg-blue-900/20 text-blue-500 border border-blue-900/50' : 
+                                                       'bg-emerald-900/20 text-emerald-500 border border-emerald-900/50' %>">
+                                                    <%= c.status %>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <% }) %>
+                                            <% } else { %>
+                                                <div
+                                                    class="text-center py-20 border-2 border-dashed border-zinc-800 rounded-xl">
+                                                    <i class="ri-inbox-line text-4xl text-zinc-400 mb-4 block"></i>
+                                                    <p class="text-zinc-400">No complaints found. Your record is clean.
+                                                    </p>
+                                                </div>
+                                                <% } %>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </main>
+
+            <%- include('../partials/footer') %>

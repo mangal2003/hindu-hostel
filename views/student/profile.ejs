@@ -1,0 +1,111 @@
+<%- include('../partials/head') %>
+    <%- include('../partials/nav') %>
+        <%- include('../partials/flash') %>
+
+            <main class="flex-grow bg-stone-950 p-6 md:p-12 text-white">
+                <div class="max-w-4xl mx-auto">
+                    <div class="border-l-4 border-red-700 pl-6 mb-12 flex justify-between items-end">
+
+
+                        <div>
+                            <h2 class="text-4xl font-serif mb-2">Resident Profile</h2>
+                            <p class="text-zinc-500 uppercase tracking-widest text-xs">Manage your hostel identity</p>
+                        </div>
+                        <a href="/student/dashboard" class="text-red-500 hover:text-white transition-colors text-sm">
+                            <i class="ri-arrow-left-line"></i> Back
+                        </a>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                        <div class="md:col-span-1">
+                            <div class="bg-zinc-900 border border-zinc-400 rounded-2xl overflow-hidden shadow-2xl">
+                                <div
+                                    class="h-24 bg-red-900/30 flex items-center justify-center border-b border-zinc-800">
+                                    <i class="ri-user-star-line text-4xl text-red-600"></i>
+                                </div>
+                                <div class="p-6 text-center">
+                                    <h3 class="text-xl font-bold text-white mb-1">
+                                        <%= user.name %>
+                                    </h3>
+                                    <p class="text-zinc-400 text-xs uppercase tracking-widest mb-4">Resident ID: <%=
+                                            user._id.toString().slice(-8) %>
+                                    </p>
+
+                                    <div class="bg-stone-950 rounded-lg p-4 space-y-3 text-left border border-zinc-800">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-[10px] text-zinc-400 uppercase">Room No</span>
+                                            <span class="text-sm font-bold text-red-600">
+                                                <%= user.roomNumber %>
+                                            </span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-[10px] text-zinc-400 uppercase">Join Date</span>
+                                            <span class="text-sm text-zinc-300 whitespace-nowrap">
+                                                <%= user.createdAt.toDateString() %>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="md:col-span-2 space-y-6">
+
+                            <div class="bg-zinc-900 border border-zinc-800 p-8 rounded-xl">
+                                <h4
+                                    class="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                                    <i class="ri-fingerprint-line text-red-600 text-[1.5rem]"></i> Permanent Records
+                                </h4>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-[10px] text-zinc-400 uppercase mb-1">Email
+                                            Address</label>
+                                        <p class="text-zinc-200 font-bold font-sans text-sm">
+                                            <%= user.email %>
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] text-zinc-400 uppercase mb-1">Enrollment
+                                            Number</label>
+                                        <p class="text-zinc-200 font-bold font-sans text-sm">
+                                            <%= user.enrollmentNumber %>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-zinc-900 border border-zinc-800 p-8 rounded-xl">
+                                <h4
+                                    class="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                                    <i class="ri-lock-password-line text-red-600 text-[1.5rem]"></i> Security
+                                    Credentials
+                                </h4>
+
+                                <form action="/student/update-password" method="POST" class="space-y-4">
+                                    <div class="grid grid-cols-1 gap-4">
+                                        <input type="password" name="oldPassword" placeholder="Current Password"
+                                            required
+                                            class="w-full bg-stone-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-red-700 outline-none transition-all text-sm">
+
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <input type="password" name="newPassword" placeholder="New Password"
+                                                required
+                                                class="w-full bg-stone-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-red-700 outline-none transition-all text-sm">
+                                            <input type="password" name="confirmPassword"
+                                                placeholder="Confirm New Password" required
+                                                class="w-full bg-stone-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-red-700 outline-none transition-all text-sm">
+                                        </div>
+                                    </div>
+                                    <button type="submit"
+                                        class="bg-red-700 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-lg transition-all tracking-widest text-xs">
+                                        UPDATE PASSWORD
+                                    </button>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <%- include('../partials/footer') %>

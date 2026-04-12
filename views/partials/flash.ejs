@@ -1,0 +1,26 @@
+<% if(success_msg && success_msg.length> 0) { %>
+    <div class="alert alert-success flash-msg"
+        style="background: #dcfce7; color: #166534; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+        <%= success_msg %>
+            <button onclick="this.parentElement.remove()" class="close-btn">&times;</button>
+    </div>
+    <% } %>
+
+        <% if(error_msg && error_msg.length> 0) { %>
+            <div class="alert alert-error flash-msg"
+                style="background: #fee2e2; color: #991b1b; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+                <%= error_msg %>
+                    <button onclick="this.parentElement.remove()" class="close-btn">&times;</button>
+            </div>
+            <% } %>
+
+                <script>
+                    setTimeout(() => {
+                        const alerts = document.querySelectorAll('.flash-msg');
+                        alerts.forEach(alert => {
+                            alert.style.transition = "opacity 0.5s ease";
+                            alert.style.opacity = "0";
+                            setTimeout(() => alert.remove(), 500);
+                        });
+                    }, 4000);
+                </script>

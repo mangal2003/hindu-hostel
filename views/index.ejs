@@ -1,0 +1,165 @@
+<%- include('partials/head') %>
+    <%- include('partials/nav') %>
+        <%- include('partials/flash') %>
+            <main class="flex-grow flex items-center justify-center text-center p-6 bg-zinc-950">
+                <div class="max-w-4xl">
+                    <h2 class="text-4xl font-serif mb-2">Heritage Meets Digital</h2>
+                    <div class="h-1 w-80 bg-red-700 mx-auto mb-8"></div>
+
+                    <p class="text-lg leading-relaxed mb-10 text-stone-300 max-w-2xl mx-auto">
+                        Welcome to the official portal of the historic Hindu Hostel, Prayagraj.
+                        Manage your residency, track complaints, and explore over a century of academic excellence.
+                    </p>
+
+                    <div class="flex gap-6 justify-center">
+                        <% if (!locals.user) { %>
+                            <a href="/login"
+                                class="btn-hostel-red font-bold text-sm tracking-widest flex items-center gap-2">
+                                <i class="ri-door-open-line"></i> ENTER PORTAL
+                            </a>
+                            <% } %>
+
+                                <a href="/hostel-events"
+                                    class="border border-white px-8 py-3 hover:bg-red-700 hover:border-red-700 transition font-bold text-sm tracking-widest">
+                                    <i class="ri-calendar-event-line"></i> EVENTS
+                                </a>
+                    </div>
+                </div>
+            </main>
+            <% if (locals.user) { %>
+                <section class="py-24 bg-zinc-950 px-6 overflow-hidden">
+                    <div class="max-w-6xl mx-auto">
+                        <div class="flex items-center justify-between mb-12 border-b border-zinc-400 pb-6">
+                            <div>
+                                <h2 class="text-3xl md:text-4xl font-serif text-white tracking-tighter"> <i
+                                        class="ri-broadcast-line text-red-500 md:hidden"></i> The Bulletin
+                                    Board </h2>
+                                <p class="text-red-700 font-sans font-bold text-[10px] uppercase tracking-[0.3em] mt-1">
+                                    Institutional &
+                                    Residential Updates</p>
+                            </div>
+                            <i class="ri-broadcast-line text-zinc-300 text-5xl hidden md:block"></i>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <% if (typeof announcements !=='undefined' && announcements.length> 0) { %>
+                                <% announcements.forEach(item=> { %>
+                                    <div
+                                        class="bg-zinc-900/50 border-2 border-zinc-800 p-8 rounded-2xl group hover:border-zinc-500 transition-all duration-500 relative">
+                                        <div class="flex items-center justify-between mb-6">
+                                            <span
+                                                class="<%= item.category === 'College' ? 'bg-blue-900/20 text-blue-400 border-blue-900/50' : 'bg-red-900/20 text-red-500 border-red-900/50' %> border px-3 py-1 rounded text-[9px] font-bold font-sans uppercase tracking-widest">
+                                                <%= item.category %>
+                                            </span>
+                                            <span class="text-zinc-300 font-mono font-bold text-[12px]">
+                                                <%= new Date(item.createdAt).toLocaleDateString('en-GB', {
+                                                    day: '2-digit' , month: 'short' }) %>
+                                            </span>
+                                        </div>
+
+                                        <h4
+                                            class="text-xl text-stone-100 mb-3 italic font-bold group-hover:text-white transition-colors">
+                                            <%= item.content %>
+                                        </h4>
+
+                                        <% if (item.link) { %>
+                                            <a href="<%= item.link %>" target="_blank"
+                                                class="inline-flex items-center gap-2 mt-4 text-[10px] font-bold text-blue-600 hover:text-white uppercase tracking-widest transition-all">
+                                                <i class="ri-external-link-line"></i> Open link
+                                            </a>
+                                            <% } %>
+                                    </div>
+                                    <% }) %>
+                                        <% } else { %>
+                                            <div
+                                                class="lg:col-span-2 text-center py-20 border-2 border-dashed border-zinc-600 rounded-3xl">
+                                                <p class="text-zinc-400 font-sans text-xs uppercase tracking-widest">
+                                                    No
+                                                    Active
+                                                    Announcements</p>
+                                            </div>
+                                            <% } %>
+                        </div>
+                    </div>
+                </section>
+                <% } %>
+
+                    <% if (locals.user) { %>
+                        <section class="p-6 bg-zinc-950 text-white border-t border-zinc-900">
+                            <div class="max-w-6xl mx-auto">
+                                <a href="/student/academic-vault" class="group block">
+                                    <div
+                                        class="flex items-center justify-between py-12 border-b border-zinc-900 group-hover:border-red-700 transition-colors duration-500 flex-wrap gap-4">
+                                        <div>
+                                            <h2
+                                                class="text-3xl md:text-4xl font-serif text-white tracking-tighter flex items-center gap-3">
+                                                <i
+                                                    class="ri-book-open-line text-red-500 group-hover:scale-110 transition-transform"></i>
+                                                Academic Resources
+                                            </h2>
+                                            <p
+                                                class="text-red-700 font-sans font-bold text-[10px] uppercase tracking-[0.3em] mt-1">
+                                                Study Material, PYQs & Resources
+                                            </p>
+                                        </div>
+                                        <div class="opacity-50 group-hover:opacity-100 transition-opacity duration-500">
+                                            <span class="text-[10px] font-bold tracking-widest text-blue-500">OPEN VAULT
+                                                <i class="ri-arrow-right-line"></i></span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </section>
+                        <% } %>
+                            <section class="py-20 bg-zinc-950 text-white px-6 border-t border-zinc-800">
+                                <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+
+                                    <div
+                                        class="text-center group bg-zinc-800 p-6 rounded-lg border-2 border-zinc-700 hover:border-red-700">
+                                        <div
+                                            class="w-20 h-20 border-2 border-red-700 rounded-xl flex items-center justify-center mx-auto mb-6 rotate-45 group-hover:bg-red-700 transition-all duration-300">
+                                            <i
+                                                class="ri-honour-line text-red-600 text-4xl -rotate-45 group-hover:text-white"></i>
+                                        </div>
+                                        <h3 class="font-serif text-2xl mb-3 tracking-wide">Rich Heritage</h3>
+                                        <p class="text-stone-400 text-sm leading-relaxed px-4">
+                                            Explore the 125-year history of the Hindu Hostel and its prestigious alumni
+                                            network.
+                                        </p>
+                                    </div>
+
+                                    <div
+                                        class="text-center group bg-zinc-800 p-6 rounded-lg border-2 border-zinc-700 hover:border-red-700">
+                                        <div
+                                            class="w-20 h-20 border-2 border-red-700 rounded-xl flex items-center justify-center mx-auto mb-6 rotate-45 group-hover:bg-red-700 transition-all duration-300">
+                                            <i
+                                                class="ri-customer-service-2-line text-red-600 text-4xl -rotate-45 group-hover:text-white"></i>
+                                        </div>
+                                        <h3 class="font-serif text-2xl mb-3 tracking-wide">Smart Complaints</h3>
+                                        <p class="text-stone-400 text-sm leading-relaxed px-4">
+                                            Effortlessly submit maintenance requests. Our backend tracks every tap and
+                                            wire in
+                                            the
+                                            building.
+                                        </p>
+
+                                    </div>
+
+                                    <div
+                                        class="text-center group bg-zinc-800 p-6 rounded-lg border-2 border-zinc-700 hover:border-red-700">
+                                        <div
+                                            class="w-20 h-20 border-2 border-red-700 rounded-xl flex items-center justify-center mx-auto mb-6 rotate-45 group-hover:bg-red-700 transition-all duration-300">
+                                            <i
+                                                class="ri-notification-3-line text-red-600 text-4xl -rotate-45 group-hover:text-white"></i>
+                                        </div>
+                                        <h3 class="font-serif text-2xl mb-3 tracking-wide">Digital Notices</h3>
+                                        <p class="text-stone-400 text-sm leading-relaxed px-4">
+                                            From mess menus to exam schedules, stay synchronized with the pulse of
+                                            Allahabad
+                                            University.
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </section>
+
+                            <%- include('partials/footer') %>
