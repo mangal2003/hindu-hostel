@@ -42,7 +42,7 @@ const sendEmail = async (toEmail, subject, htmlBody) => {
 };
 
 const sendVerificationEmail = async (userEmail, userName, token) => {
-  const baseUrl = process.env.BASE_URL || "http://localhost:3000";
+  const baseUrl = process.env.BASE_URL;
   const url = `${baseUrl}/verify/${token}`;
 
   const body = `
@@ -59,7 +59,7 @@ const sendVerificationEmail = async (userEmail, userName, token) => {
 };
 
 const sendResetEmail = async (userEmail, userName, token) => {
-  const baseUrl = process.env.BASE_URL || "http://localhost:3000";
+  const baseUrl = process.env.BASE_URL;
   const url = `${baseUrl}/reset-password/${token}`;
 
   const body = `
