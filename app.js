@@ -11,6 +11,8 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const User = require("./models/User");
 const bcrypt = require("bcrypt");
+const compression = require("compression");
+const helmet = require("helmet");
 
 mongoose
   .connect(process.env.MONGO_URI)
@@ -24,12 +26,17 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
   session({
-    secret: "hindu-hostel-secret",
-    resave: true,
-    saveUninitialized: true,
+    secret: process.env.SESSION_SECRET || "hindu-hostel-secret",
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      ttl: 14 * 24 * 60 * 60,
+    }),
     cookie: {
       maxAge: 1000 * 60 * 60 * 24,
-      secure: false,
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
     },
   }),
 );
@@ -79,6 +86,13 @@ passport.use(
   ),
 );
 
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  }),
+);
+app.use(compression());
+
 app.use((req, res, next) => {
   res.locals.success_msg = req.flash("success_msg") || [];
   res.locals.error_msg = req.flash("error_msg") || [];
@@ -101,7 +115,7 @@ app.use((req, res) => {
   });
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`🚀 Hindu Hostel Portal active on Port ${PORT}`);
 });
