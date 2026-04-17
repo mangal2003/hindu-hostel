@@ -15,14 +15,11 @@
                     </p>
 
                     <div class="flex flex-col md:flex-row gap-4 justify-center font-sans">
-                        <a href="/"
-                            class="px-8 py-3 bg-zinc-900 border border-zinc-800 text-white text-[10px] font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all">
-                            Return to Portal
+                        <a href="javascript:void(0)" onclick="history.back()"
+                            class="group text-zinc-400 hover:text-red-500 transition-all text-[11px] font-sans font-bold uppercase tracking-widest flex items-center gap-2">
+                            <i class="ri-arrow-left-line group-hover:-translate-x-1 transition-transform"></i>
+                            <span>Back</span>
                         </a>
-                        <button onclick="window.history.back()"
-                            class="px-8 py-3 text-zinc-500 text-[10px] font-bold uppercase tracking-widest hover:text-red-600 transition-colors">
-                            Go Back
-                        </button>
                     </div>
                 </div>
             </div>

@@ -9,6 +9,8 @@ const { sendResetEmail } = require("../utils/mailer");
 const crypto = require("crypto");
 const Announcement = require("../models/Announcement");
 const Resource = require("../models/Resource");
+const Scholar = require("../models/Scholar");
+const Essential = require("../models/Essential");
 
 router.get("/", async (req, res) => {
   try {
@@ -55,9 +57,25 @@ router.get("/student/academic-vault", isLoggedIn, async (req, res) => {
 });
 
 router.get("/history", async (req, res) => {
-  res.render("history", {
-    title: "Legacy & History | Hindu Hostel",
-  });
+  try {
+    const scholars = await Scholar.find().sort({ name: 1 });
+    res.render("history", {
+      title: "Hall of Eminence | Hindu Hostel",
+      scholars,
+    });
+  } catch (err) {
+    console.error("Fetch Error:", err);
+    res.redirect("/");
+  }
+});
+
+router.get("/helpdesk", async (req, res) => {
+  try {
+    const essentials = await Essential.find().sort({ category: 1 });
+    res.render("helpdesk", { title: "Resident Helpdesk", essentials });
+  } catch (err) {
+    res.redirect("/");
+  }
 });
 
 router.get("/login", (req, res) => {
@@ -77,11 +95,8 @@ router.post("/login", (req, res, next) => {
       if (err) return next(err);
 
       req.flash("success_msg", `Welcome back, ${user.name}!`);
-      const redirectPath =
-        user.role === "admin" || user.role === "warden"
-          ? "/admin/dashboard"
-          : "/student/dashboard";
-      return res.redirect(redirectPath);
+
+      return res.redirect("/");
     });
   })(req, res, next);
 });

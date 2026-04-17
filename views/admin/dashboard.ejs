@@ -1,35 +1,42 @@
 <%- include('../partials/head') %>
     <%- include('../partials/nav') %>
         <%- include('../partials/flash') %>
-            <div id="adminModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
-                <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="toggleAdminModal()"></div>
 
+            <div id="adminModal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4 pt-6">
+                <div class="absolute inset-0 bg-black/90 backdrop-blur-md" onclick="toggleAdminModal()"></div>
                 <div
-                    class="relative bg-zinc-900 border border-zinc-800 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden font-sans">
-                    <div class="p-6 border-b border-zinc-800 flex justify-between items-center bg-zinc-950/50">
-                        <h3 class="text-white font-serif italic text-xl">Authority Register</h3>
-                        <button onclick="toggleAdminModal()" class="text-zinc-500 hover:text-white transition-colors">
-                            <i class="ri-close-line text-2xl"></i>
+                    class="relative bg-zinc-900 border border-zinc-800 w-full max-w-2xl rounded-[2rem] shadow-2xl overflow-hidden">
+                    <div class="p-8 border-b border-zinc-800 flex justify-between items-center bg-zinc-950/50">
+                        <div>
+                            <h3 class="text-white font-serif italic text-2xl">Authority Register</h3>
+                            <p class="text-[10px] text-zinc-500 uppercase tracking-widest mt-1">Manage Administrative
+                                Privileges</p>
+                        </div>
+                        <button onclick="toggleAdminModal()"
+                            class="w-10 h-10 rounded-full flex items-center justify-center bg-zinc-800 text-zinc-400 hover:text-white transition-all">
+                            <i class="ri-close-line text-xl"></i>
                         </button>
                     </div>
-
-                    <div class="max-h-[60vh] overflow-y-auto p-4 space-y-3">
+                    <div class="max-h-[50vh] overflow-y-auto p-6 space-y-4">
                         <% allAdmins.forEach(adm=> { %>
                             <div
-                                class="flex items-center justify-between p-4 bg-zinc-950 border border-zinc-800 rounded-xl">
+                                class="flex items-center justify-between p-5 bg-zinc-950/50 border border-zinc-800 rounded-2xl group hover:border-blue-900/50 transition-all">
                                 <div>
-                                    <p class="text-emerald-500 font-bold text-sm">
+                                    <p class="text-white font-bold text-sm flex items-center gap-2">
                                         <%= adm.name %>
+                                            <span
+                                                class="text-[8px] px-2 py-0.5 rounded bg-blue-900/20 text-blue-400 border border-blue-900/50 uppercase tracking-tighter">
+                                                <%= adm.role %>
+                                            </span>
                                     </p>
-                                    <p class="text-zinc-300 text-[10px] tracking-widest uppercase">
-                                        <%= adm.role %>
+                                    <p class="text-zinc-500 text-[11px] font-mono mt-1">
+                                        <%= adm.email %>
                                     </p>
                                 </div>
-
-                                <form action="/admin/update-role" method="POST" class="flex gap-2">
+                                <form action="/admin/update-role" method="POST">
                                     <input type="hidden" name="adminId" value="<%= adm._id %>">
                                     <select name="newRole" onchange="this.form.submit()"
-                                        class="bg-blue-900 border border-blue-600 text-white text-[10px] font-bold uppercase py-1 px-3 rounded-lg focus:border-blue-500 outline-none">
+                                        class="bg-zinc-900 border border-zinc-700 text-zinc-300 text-[10px] font-bold uppercase py-2 px-4 rounded-xl focus:border-blue-500 outline-none cursor-pointer hover:bg-zinc-800">
                                         <option value="admin" <%=adm.role==='admin' ? 'selected' : '' %>>Admin
                                         </option>
                                         <option value="warden" <%=adm.role==='warden' ? 'selected' : '' %>>Warden
@@ -39,63 +46,66 @@
                             </div>
                             <% }) %>
                     </div>
-
-                    <div class="p-4 bg-zinc-950/50 text-center">
-                        <p class="text-[10px] text-zinc-400 uppercase tracking-widest">Digital Authorization Required
-                            for
-                            Changes</p>
-                    </div>
                 </div>
             </div>
-            <div id="residentModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
-                <div class="absolute inset-0 bg-black/85 backdrop-blur-md" onclick="toggleResidentModal()"></div>
-
+            <div id="residentModal" class="fixed inset-0 z-[150] hidden flex items-center justify-center p-4 pt-6">
+                <div class="absolute inset-0 bg-black/90 backdrop-blur-md" onclick="toggleResidentModal()"></div>
                 <div
-                    class="relative bg-zinc-900 border border-zinc-800 w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden font-sans">
+                    class="relative bg-zinc-900 border border-zinc-800 w-full max-w-5xl rounded-[2.5rem] shadow-2xl overflow-hidden">
                     <div
-                        class="p-6 border-b border-zinc-800 bg-zinc-950/50 flex flex-col md:flex-row justify-between items-center gap-4">
-                        <h3 class="text-white font-serif italic text-xl">Resident Directory</h3>
-                        <div class="relative w-full md:w-64">
-                            <i class="ri-search-line absolute left-3 top-1.5 text-zinc-500"></i>
+                        class="p-8 border-b border-zinc-800 bg-zinc-950/50 flex flex-col md:flex-row justify-between items-center gap-6">
+                        <div>
+                            <h3 class="text-white font-serif italic text-2xl">Resident Directory</h3>
+                            <p class="text-[10px] text-zinc-500 uppercase tracking-widest mt-1">Authorized Registry of
+                                Scholars</p>
+                        </div>
+                        <div class="relative w-full md:w-80 group">
+                            <i
+                                class="ri-search-2-line absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-red-600 transition-colors"></i>
                             <input type="text" id="residentSearch" onkeyup="filterResidents()"
-                                placeholder="Search Name or Room..."
-                                class="w-full bg-zinc-900 border border-zinc-800 rounded-lg py-2 pl-10 pr-4 text-xs text-white outline-none focus:border-red-700">
+                                placeholder="Search by name, room, or ID..."
+                                class="w-full bg-zinc-900 border border-zinc-700 rounded-full py-3 pl-12 pr-6 text-xs text-white outline-none focus:border-red-700 transition-all">
                         </div>
                     </div>
 
-                    <div class="max-h-[60vh] overflow-y-auto p-4">
+                    <div class="max-h-[60vh] overflow-y-auto">
                         <table class="w-full text-left border-collapse" id="residentTable">
-                            <thead class="bg-zinc-950 text-zinc-300 text-[10px] uppercase tracking-widest font-bold">
+                            <thead
+                                class="sticky top-0 bg-zinc-950 text-zinc-500 text-[9px] uppercase tracking-[0.3em] font-black border-b border-zinc-800">
                                 <tr>
-                                    <th class="p-4">Student Details</th>
-                                    <th class="p-4">Enrollment</th>
-                                    <th class="p-4">Room</th>
-                                    <th class="p-4 text-right">Action</th>
+                                    <th class="p-6">Resident Identity</th>
+                                    <th class="p-6">Enrollment Hash</th>
+                                    <th class="p-6">Location</th>
+                                    <th class="p-6 text-right text-red-600">Operations</th>
                                 </tr>
                             </thead>
-                            <tbody class="text-xs">
+                            <tbody class="divide-y divide-zinc-800/50">
                                 <% allStudents.forEach(st=> { %>
-                                    <tr
-                                        class="border-b border-zinc-800/50 hover:bg-zinc-800/30 transition-colors resident-row">
-                                        <td class="p-4">
-                                            <p class="text-white font-bold">
+                                    <tr class="resident-row hover:bg-zinc-800/30 transition-colors group">
+                                        <td class="p-6">
+                                            <p
+                                                class="text-zinc-200 font-bold text-sm group-hover:text-white transition-colors">
                                                 <%= st.name %>
                                             </p>
-                                            <p class="text-zinc-300 text-[12px]">
+                                            <p class="text-[10px] text-zinc-500 font-mono lowercase">
                                                 <%= st.email %>
                                             </p>
                                         </td>
-                                        <td class="p-4 font-mono text-zinc-400">
+                                        <td class="p-6 font-mono text-xs text-zinc-400 uppercase tracking-tighter">
                                             <%= st.enrollmentNumber %>
                                         </td>
-                                        <td class="p-4 text-red-500 font-bold">
-                                            <%= st.roomNumber %>
+                                        <td class="p-6">
+                                            <span
+                                                class="px-3 py-1 rounded bg-zinc-800 border border-zinc-700 text-zinc-300 font-bold text-[10px]">
+                                                Room <%= st.roomNumber %>
+                                            </span>
                                         </td>
-                                        <td class="p-4 text-right">
+                                        <td class="p-6 text-right">
                                             <form action="/admin/remove-resident/<%= st._id %>" method="POST"
-                                                onsubmit="return confirm('Expel this resident from the digital registry?')">
-                                                <button class="text-zinc-600 hover:text-red-600 transition-colors">
-                                                    <i class="ri-user-unfollow-line text-lg"></i>
+                                                onsubmit="return confirm('Expunge this resident from the registry?')">
+                                                <button
+                                                    class="w-10 h-10 rounded-xl bg-red-900/10 border border-red-900/20 text-red-600 hover:bg-red-600 hover:text-white transition-all">
+                                                    <i class="ri-user-unfollow-line"></i>
                                                 </button>
                                             </form>
                                         </td>
@@ -104,286 +114,373 @@
                             </tbody>
                         </table>
                     </div>
-
-                    <div class="p-4 bg-zinc-950 text-center">
-                        <p class="text-[9px] text-red-600 uppercase tracking-widest font-bold">End of Directory</p>
+                    <div class="p-4 bg-zinc-950/80 border-t border-zinc-800 text-center">
+                        <p class="text-[9px] text-zinc-600 uppercase tracking-[0.5em] font-bold">End of Digital Registry
+                        </p>
                     </div>
                 </div>
             </div>
-            <div id="securityModal" class="fixed inset-0 z-[110] hidden flex items-center justify-center p-4">
-                <div class="absolute inset-0 bg-black/90 backdrop-blur-md" onclick="toggleSecurityModal()"></div>
-
+            <div id="securityModal" class="fixed inset-0 z-[160] hidden flex items-center justify-center p-4 pt-6">
+                <div class="absolute inset-0 bg-black/95 backdrop-blur-lg" onclick="toggleSecurityModal()"></div>
                 <div
-                    class="relative bg-zinc-900 border border-zinc-800 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden font-sans">
-                    <div class="p-6 border-b border-zinc-800 flex justify-between items-center bg-zinc-950/50">
-                        <h3 class="text-white font-serif italic text-xl">Security Desk</h3>
-                        <button onclick="toggleSecurityModal()" class="text-zinc-500 hover:text-white">
-                            <i class="ri-close-line text-2xl"></i>
-                        </button>
+                    class="relative bg-zinc-900 border border-zinc-800 w-full max-w-md rounded-[2.5rem] shadow-2xl overflow-hidden">
+                    <div class="p-8 border-b border-zinc-800 flex justify-between items-center bg-zinc-950/50">
+                        <div>
+                            <h3 class="text-white font-serif italic text-xl">Security Desk</h3>
+                            <p class="text-[9px] text-zinc-500 uppercase tracking-widest mt-1">Credentials Management
+                            </p>
+                        </div>
+                        <button onclick="toggleSecurityModal()" class="text-zinc-600 hover:text-white"><i
+                                class="ri-close-line text-2xl"></i></button>
                     </div>
 
-                    <div class="p-8">
-                        <form action="/admin/change-password" method="POST" class="space-y-4">
+                    <div class="p-10">
+                        <form action="/admin/change-password" method="POST" class="space-y-6">
                             <div>
                                 <label
-                                    class="block text-[10px] font-bold uppercase text-zinc-500 mb-2 tracking-widest">Current
-                                    Password</label>
+                                    class="block text-[9px] font-black uppercase text-zinc-500 mb-2 tracking-[0.2em]">Current
+                                    Authorization</label>
                                 <input type="password" name="currentPassword" required
-                                    class="w-full bg-zinc-950 border border-zinc-800 rounded-lg py-3 px-4 text-white focus:border-emerald-600 outline-none transition-all">
+                                    class="w-full bg-zinc-950 border border-zinc-800 rounded-xl py-4 px-5 text-white focus:border-emerald-600 outline-none transition-all placeholder:text-zinc-800">
                             </div>
                             <div>
                                 <label
-                                    class="block text-[10px] font-bold uppercase text-zinc-500 mb-2 tracking-widest">New
-                                    Password</label>
+                                    class="block text-[9px] font-black uppercase text-zinc-500 mb-2 tracking-[0.2em]">New
+                                    Credential</label>
                                 <input type="password" name="newPassword" required minlength="8"
-                                    class="w-full bg-zinc-950 border border-zinc-800 rounded-lg py-3 px-4 text-white focus:border-emerald-600 outline-none transition-all">
+                                    class="w-full bg-zinc-950 border border-zinc-800 rounded-xl py-4 px-5 text-white focus:border-emerald-600 outline-none transition-all">
                             </div>
                             <button type="submit"
-                                class="w-full bg-emerald-700 text-white font-bold py-3 rounded-lg hover:bg-white hover:text-black transition-all text-xs tracking-widest uppercase">
-                                Update Password
+                                class="w-full bg-emerald-700 text-white font-black py-4 rounded-xl hover:bg-white hover:text-black transition-all text-[10px] tracking-[0.3em] uppercase shadow-lg shadow-emerald-900/20">
+                                Commit Update
                             </button>
                         </form>
 
-                        <div class="relative my-8">
+                        <div class="relative my-10">
                             <div class="absolute inset-0 flex items-center"><span
                                     class="w-full border-t border-zinc-800"></span>
                             </div>
-                            <div class="relative flex justify-center text-[10px] uppercase"><span
-                                    class="bg-zinc-900 px-2 text-zinc-600 tracking-tighter">Or secure reset</span></div>
+                            <div class="relative flex justify-center text-[9px] uppercase tracking-widest"><span
+                                    class="bg-zinc-900 px-4 text-zinc-600 font-bold">Emergency Protocol</span></div>
                         </div>
 
                         <form action="/forgot-password" method="POST">
                             <input type="hidden" name="email" value="<%= user.email %>">
                             <button type="submit"
-                                class="w-full border border-zinc-800 text-zinc-400 py-3 rounded-lg hover:bg-zinc-800 transition-all text-[10px] font-bold tracking-widest uppercase flex items-center justify-center gap-2">
-                                <i class="ri-mail-send-line"></i> Send Reset Link to Email
+                                class="w-full border border-zinc-800 text-zinc-500 py-4 rounded-xl hover:bg-zinc-800 hover:text-white transition-all text-[9px] font-black tracking-[0.2em] uppercase flex items-center justify-center gap-3">
+                                <i class="ri-mail-send-line text-lg"></i> Dispatch Reset Token
                             </button>
                         </form>
                     </div>
                 </div>
             </div>
-            <div id="announcementModal"
-                class="fixed inset-0 top-16 z-[120] hidden flex items-center justify-center p-4">
+            <div id="announcementModal" class="fixed inset-0 z-[170] hidden flex items-center justify-center p-4 pt-6">
                 <div class="absolute inset-0 bg-black/90 backdrop-blur-md" onclick="toggleAnnouncementModal()"></div>
-
                 <div
-                    class="relative bg-zinc-900 border border-zinc-800 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden font-sans">
-                    <div class="p-4 border-b border-zinc-800 flex justify-between items-center bg-zinc-950/50">
-                        <h3 class="text-white font-serif italic text-xl">New Broadcast</h3>
-                        <button onclick="toggleAnnouncementModal()" class="text-zinc-500 hover:text-white">
-                            <i class="ri-close-line text-2xl"></i>
-                        </button>
+                    class="relative bg-zinc-900 border border-zinc-800 w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden">
+                    <div class="p-6 border-b border-zinc-800 flex justify-between items-center bg-zinc-950/50">
+                        <div>
+                            <h3 class="text-white font-serif italic text-xl">New Broadcast</h3>
+                            <p class="text-[9px] text-zinc-500 uppercase tracking-widest mt-1">Publish to Bulletin Board
+                            </p>
+                        </div>
+                        <button onclick="toggleAnnouncementModal()" class="text-zinc-600 hover:text-white"><i
+                                class="ri-close-line text-2xl"></i></button>
                     </div>
 
-                    <form action="/admin/announcements/new" method="POST" class="p-8 space-y-6">
+                    <form action="/admin/announcements/new" method="POST" class="p-10 space-y-8">
                         <div>
                             <label
-                                class="block text-[10px] font-bold uppercase text-zinc-500 mb-2 tracking-widest">Notice
-                                Category</label>
-                            <select name="category"
-                                class="w-full bg-zinc-950 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:border-blue-600 outline-none transition-all">
-                                <option value="Hostel">Hostel (Internal)</option>
-                                <option value="College">College (Institutional)</option>
-                            </select>
+                                class="block text-[9px] font-black uppercase text-zinc-500 mb-3 tracking-[0.2em]">Category</label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <label
+                                    class="relative flex items-center justify-center p-4 rounded-xl border border-zinc-800 bg-zinc-950 cursor-pointer hover:border-red-900 transition-all has-[:checked]:border-red-600 has-[:checked]:bg-red-950/10 group">
+                                    <input type="radio" name="category" value="Hostel" checked class="hidden">
+                                    <span
+                                        class="text-[10px] font-black text-zinc-500 group-hover:text-zinc-300 uppercase tracking-widest">Hostel</span>
+                                </label>
+                                <label
+                                    class="relative flex items-center justify-center p-4 rounded-xl border border-zinc-800 bg-zinc-950 cursor-pointer hover:border-blue-900 transition-all has-[:checked]:border-blue-600 has-[:checked]:bg-blue-950/10 group">
+                                    <input type="radio" name="category" value="College" class="hidden">
+                                    <span
+                                        class="text-[10px] font-black text-zinc-500 group-hover:text-zinc-300 uppercase tracking-widest">College</span>
+                                </label>
+                            </div>
                         </div>
 
                         <div>
                             <label
-                                class="block text-[10px] font-bold uppercase text-zinc-500 mb-2 tracking-widest">Update
-                                Content</label>
+                                class="block text-[9px] font-black uppercase text-zinc-500 mb-2 tracking-[0.2em]">Announcement
+                                Body</label>
                             <textarea name="content" required rows="4" maxlength="200" style="resize: none;"
-                                class="w-full bg-zinc-950 border border-zinc-800 rounded-xl py-4 px-4 text-white placeholder:text-zinc-400 focus:border-blue-600 outline-none transition-all"
-                                placeholder="E.g. Semester fee submission deadline is April 25..."></textarea>
+                                class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl py-5 px-6 text-white placeholder:text-zinc-500 focus:border-blue-600 outline-none transition-all italic font-serif"
+                                placeholder="Communicate the directive..."></textarea>
                         </div>
 
                         <div>
                             <label
-                                class="block text-[10px] font-bold uppercase text-zinc-500 mb-2 tracking-widest">Action
-                                Link
-                                (Optional)</label>
+                                class="block text-[9px] font-black uppercase text-zinc-500 mb-2 tracking-[0.2em]">Available
+                                Link (Optional)</label>
                             <div class="relative">
-                                <i class="ri-link absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"></i>
+                                <i class="ri-link absolute left-5 top-1/2 -translate-y-1/2 text-zinc-700"></i>
                                 <input type="url" name="link"
-                                    class="w-full bg-zinc-950 border border-zinc-800 rounded-xl py-3 pl-12 pr-4 text-white placeholder:text-zinc-400 focus:border-blue-600 outline-none transition-all"
-                                    placeholder="https://portal.com">
+                                    class="w-full bg-zinc-950 border border-zinc-800 rounded-xl py-4 pl-14 pr-6 text-xs text-white focus:border-blue-600 outline-none transition-all placeholder:text-zinc-500"
+                                    placeholder="https://official-source.com">
                             </div>
                         </div>
 
                         <button type="submit"
-                            class="w-full bg-blue-700 text-white font-bold py-4 rounded-xl hover:bg-white hover:text-black transition-all duration-500 text-[10px] uppercase tracking-[0.3em]">
-                            Post to Bulletin
+                            class="w-full bg-blue-700 text-white font-black py-5 rounded-2xl hover:bg-white hover:text-black transition-all duration-700 text-[10px] uppercase tracking-[0.4em] shadow-xl shadow-blue-900/20">
+                            Post
                         </button>
                     </form>
                 </div>
             </div>
 
-            <main class="flex-grow bg-zinc-950 p-4 md:p-10 text-stone-50 font-serif">
-                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-10 gap-6">
-                    <div>
-                        <h2 class="text-3xl md:text-5xl tracking-tighter text-white">Admin's Desk</h2>
-                        <p class="text-red-600 font-bold tracking-[0.3em] text-[10px] uppercase mt-2 font-sans">
-                            Administrative Control Portal
-                        </p>
-                    </div>
-                    <div class="flex flex-row gap-3 w-full lg:w-auto font-sans">
-                        <a href="/admin/register-student"
-                            class="flex-1 lg:flex-none bg-red-700 text-white px-4 md:px-6 py-3 rounded shadow-lg hover:bg-white hover:text-black transition-all flex items-center justify-center gap-2 font-bold text-xs">
-                            <i class="ri-user-add-line"></i> <span class="hidden sm:inline">REGISTER STUDENT</span><span
-                                class="sm:hidden">REGISTER</span>
-                        </a>
-                        <button
-                            class="flex-1 lg:flex-none bg-zinc-900 border border-zinc-800 px-4 md:px-6 py-3 rounded shadow-sm hover:bg-zinc-800 transition flex items-center justify-center gap-2 font-bold text-xs text-zinc-700 cursor-not-allowed">
-                            <i class="ri-file-list-3-line"></i> EXPORT
-                        </button>
-                    </div>
-                </div>
-                <a href="/"
-                    class="text-zinc-500 hover:text-red-600 transition-all text-[12px] font-sans font-bold uppercase tracking-[0.2em] flex items-center gap-2 m-6">
-                    <i class="ri-arrow-left-line"></i> Back
-                </a>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-12 font-sans">
+            <main class="min-h-screen bg-stone-950 p-6 md:p-12 text-stone-50 font-sans">
+                <div class="max-w-7xl mx-auto">
+
+
                     <div
-                        class="bg-zinc-900 p-5 md:p-7 border-b-4 border-red-700 rounded-t-lg shadow-2xl flex flex-col justify-between">
-                        <div>
-                            <p class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Residents</p>
-                            <h3 class="text-3xl md:text-4xl font-bold mt-2 text-white">
+                        class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-12 gap-8 bg-zinc-900/20 p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] border border-zinc-800/50 backdrop-blur-md">
+
+                        <div
+                            class="flex flex-col sm:flex-row items-center sm:items-start gap-6 w-full lg:w-auto text-center sm:text-left">
+                            <div class="relative shrink-0">
+                                <div
+                                    class="w-20 h-20 rounded-[1.5rem] bg-zinc-950 border border-red-900/50 flex items-center justify-center shadow-2xl">
+                                    <i class="ri-shield-user-line text-4xl text-red-600"></i>
+                                </div>
+                                <div
+                                    class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-stone-950 border border-zinc-800 flex items-center justify-center">
+                                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                                </div>
+                            </div>
+
+                            <div class="flex-grow">
+                                <p class="text-zinc-500 text-[8px] font-black uppercase tracking-[0.4em] mb-2">
+                                    Authenticated Administrator
+                                </p>
+                                <h2
+                                    class="text-3xl md:text-4xl font-serif italic text-white tracking-tighter leading-tight mb-3">
+                                    <%= user.name %>
+                                </h2>
+
+                                <div class="flex flex-wrap justify-center sm:justify-start gap-2">
+                                    <span
+                                        class="text-[8px] px-3 py-1.5 rounded-lg bg-red-950/30 text-red-500 border border-red-900/50 uppercase font-black tracking-widest whitespace-nowrap">
+                                        <%= user.role %> Status
+                                    </span>
+                                    <span
+                                        class="text-[8px] px-3 py-1.5 rounded-lg bg-zinc-950 text-zinc-500 border border-zinc-800 uppercase font-bold tracking-widest font-mono whitespace-nowrap">
+                                        ID: <%= user._id.toString().slice(-4).toUpperCase() %>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+                            <a href="/admin/register-student"
+                                class="bg-red-700 text-white px-6 py-4 rounded-xl shadow-lg shadow-red-900/20 hover:bg-white hover:text-black transition-all flex items-center justify-center gap-3 font-bold text-[10px] uppercase tracking-widest">
+                                <i class="ri-user-add-line text-lg"></i> Register Resident
+                            </a>
+                            <button onclick="toggleSecurityModal()"
+                                class="bg-zinc-900 border border-zinc-800 text-zinc-400 px-6 py-4 rounded-xl hover:text-white hover:bg-zinc-800 transition-all flex items-center justify-center gap-3 font-bold text-[10px] uppercase tracking-widest">
+                                <i class="ri-settings-4-line text-lg"></i> Settings
+                            </button>
+                        </div>
+                    </div>
+
+                    <a href="javascript:void(0)" onclick="history.back()"
+                        class="group text-zinc-500 hover:text-white transition-all text-[11px] font-sans font-bold uppercase tracking-[0.2em] flex items-center gap-2 mb-12">
+                        <i class="ri-arrow-left-line group-hover:-translate-x-1 transition-transform"></i>
+                        <span>Back</span>
+                    </a>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                        <div
+                            class="bg-zinc-900/40 border border-zinc-800 p-8 rounded-[2rem] shadow-xl group hover:border-red-700 transition-all duration-500">
+                            <div class="flex justify-between items-start mb-4">
+                                <p class="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em]">Live Registry
+                                </p>
+                                <i
+                                    class="ri-group-line text-zinc-800 text-3xl group-hover:text-red-700/30 transition-colors"></i>
+                            </div>
+                            <h3 class="text-5xl font-serif italic text-white">
                                 <%= studentCount %>
                             </h3>
+                            <button onclick="toggleResidentModal()"
+                                class="mt-6 w-full py-3 rounded-xl bg-zinc-950 border border-zinc-800 text-[9px] font-black uppercase tracking-widest text-zinc-400 hover:text-white hover:bg-zinc-900 transition-all">
+                                View Directory
+                            </button>
                         </div>
-                        <button onclick="toggleResidentModal()"
-                            class="mt-4 bg-zinc-800 border border-zinc-700 text-white text-[9px] font-bold uppercase tracking-widest py-2 px-3 rounded hover:bg-red-700 hover:border-red-700 transition-all text-center flex items-center justify-center gap-2">
-                            <i class="ri-group-line"></i> MANAGE RESIDENTS
-                        </button>
-                    </div>
-                    <div class="bg-zinc-900 p-5 md:p-7 border-b-4 border-red-700 rounded-t-lg shadow-2xl">
-                        <p class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Active Complaints</p>
-                        <h3 class="text-3xl md:text-4xl font-bold mt-2 text-red-600">
-                            <%= pendingCount %>
-                        </h3>
-                        <a href="/admin/complaints"
-                            class="mt-4 bg-zinc-800 border border-zinc-700 text-white text-[9px] font-bold uppercase tracking-widest py-2 px-3 rounded hover:bg-red-700 hover:border-red-700 transition-all text-center flex items-center justify-center gap-2">
-                            <p>View All</p>
-                        </a>
-                    </div>
-                    <div class="bg-zinc-900 p-5 md:p-7 border-b-4 border-red-700 rounded-t-lg shadow-2xl">
-                        <p class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Admins</p>
-                        <h3 class="text-3xl md:text-4xl font-bold mt-2 text-white">
-                            <%= adminsCount %>
-                        </h3>
-                        <a href="/admin/manage-admins"
-                            class="mt-4 bg-zinc-800 border border-zinc-700 text-white text-[9px] font-bold uppercase tracking-widest py-2 px-3 rounded hover:bg-red-700 hover:border-red-700 transition-all text-center flex items-center justify-center gap-2">
-                            <p>Manage Access</p>
-                        </a>
-                    </div>
-                    <div
-                        class="bg-zinc-900 p-5 md:p-7 border-b-4 border-yellow-500 rounded-t-lg shadow-2xl flex flex-col justify-between">
-                        <div>
-                            <p class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Authority</p>
-                            <h3 class="text-xl md:text-2xl font-bold mt-2 text-zinc-400">Staff Roles</h3>
-                        </div>
-                        <button onclick="toggleAdminModal()"
-                            class="mt-4 bg-zinc-800 border border-zinc-700 text-white text-[9px] font-bold uppercase tracking-widest py-2 px-3 rounded hover:bg-yellow-500 hover:border-yellow-700 transition-all text-center flex items-center justify-center gap-2">
-                            <i class="ri-shield-flash-line text-[0.6rem]"></i> MODIFY ACCESS
-                        </button>
-                    </div>
-                    <div
-                        class="bg-zinc-900 p-5 md:p-7 border-b-4 border-emerald-600 rounded-t-lg shadow-2xl flex flex-col justify-between">
-                        <div>
-                            <p class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Security</p>
-                            <h3 class="text-xl md:text-2xl font-bold mt-2 text-zinc-400">Account</h3>
-                        </div>
-                        <button onclick="toggleSecurityModal()"
-                            class="mt-4 bg-zinc-800 border border-zinc-700 text-white text-[9px] font-bold uppercase tracking-widest py-2 px-3 rounded hover:bg-emerald-700 hover:border-emerald-700 transition-all text-center flex items-center justify-center gap-2">
-                            <i class="ri-lock-password-line"></i> PASSWORD SETTINGS
-                        </button>
-                    </div>
-                    <div
-                        class="bg-zinc-900 p-5 md:p-7 border-b-4 border-blue-600 rounded-t-lg shadow-2xl flex flex-col justify-between">
-                        <div>
-                            <p class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Broadcast</p>
-                            <h3 class="text-[1em] md:text-2xl font-bold mt-2 text-zinc-400">Announcements
+
+                        <div
+                            class="bg-zinc-900/40 border border-zinc-800 p-8 rounded-[2rem] shadow-xl group hover:border-orange-500 transition-all duration-500">
+                            <div class="flex justify-between items-start mb-4">
+                                <p class="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em]">Pending
+                                    Issues</p>
+                                <i
+                                    class="ri-error-warning-line text-zinc-800 text-3xl group-hover:text-orange-500/30 transition-colors"></i>
+                            </div>
+                            <h3 class="text-5xl font-serif italic text-orange-500">
+                                <%= pendingCount %>
                             </h3>
+                            <a href="/admin/complaints"
+                                class="mt-6 block w-full py-3 text-center rounded-xl bg-zinc-950 border border-zinc-800 text-[9px] font-black uppercase tracking-widest text-zinc-400 hover:text-white hover:bg-zinc-900 transition-all">
+                                Review Logs
+                            </a>
                         </div>
-                        <button onclick="toggleAnnouncementModal()"
-                            class="mt-4 bg-zinc-800 border border-zinc-700 text-white text-[9px] font-bold uppercase tracking-widest py-2 px-3 rounded hover:bg-blue-700 hover:border-blue-700 transition-all text-center flex items-center justify-center gap-2">
-                            <i class="ri-megaphone-line"></i> POST UPDATE
-                        </button>
+
+                        <div
+                            class="bg-zinc-900/40 border border-zinc-800 p-8 rounded-[2rem] shadow-xl group hover:border-blue-500 transition-all duration-500">
+                            <div class="flex justify-between items-start mb-4">
+                                <p class="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em]">Authority
+                                    Staff</p>
+                                <i
+                                    class="ri-shield-user-line text-zinc-800 text-3xl group-hover:text-blue-500/30 transition-colors"></i>
+                            </div>
+                            <h3 class="text-5xl font-serif italic text-white">
+                                <%= adminsCount %>
+                            </h3>
+                            <button onclick="toggleAdminModal()"
+                                class="mt-6 w-full py-3 rounded-xl bg-zinc-950 border border-zinc-800 text-[9px] font-black uppercase tracking-widest text-zinc-400 hover:text-white hover:bg-zinc-900 transition-all">
+                                Manage Access
+                            </button>
+                        </div>
+
+                        <div class="grid grid-rows-2 gap-4">
+                            <button onclick="toggleAnnouncementModal()"
+                                class="bg-blue-900/10 border border-blue-900/30 p-4 rounded-2xl hover:bg-blue-900/20 transition-all flex items-center justify-between group">
+                                <span class="text-[9px] font-black uppercase tracking-widest text-blue-400">New
+                                    Broadcast</span>
+                                <i
+                                    class="ri-megaphone-line text-blue-500 group-hover:rotate-12 transition-transform"></i>
+                            </button>
+                            <a href="/student/dashboard"
+                                class="bg-emerald-900/10 border border-emerald-900/30 p-4 rounded-2xl hover:bg-emerald-900/20 transition-all flex items-center justify-between group">
+                                <span class="text-[9px] font-black uppercase tracking-widest text-emerald-400">View
+                                    Profile</span>
+                                <i class="ri-user-line text-emerald-500 group-hover:scale-110 transition-transform"></i>
+                            </a>
+                        </div>
                     </div>
-                    <div
-                        class="bg-zinc-900 p-5 md:p-7 border-b-4 border-emerald-500 rounded-t-lg shadow-2xl flex flex-col justify-between">
-                        <div>
-                            <p class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Academics</p>
-                            <h3 class="text-xl md:text-2xl font-bold mt-2 text-zinc-400">Add Material</h3>
-                        </div>
+
+
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
                         <a href="/admin/resources/new"
-                            class="mt-4 bg-zinc-800 border border-zinc-700 text-white text-[9px] font-bold uppercase tracking-widest py-2 px-3 rounded hover:bg-emerald-700 transition-all text-center">
-                            UPLOAD DATA
+                            class="group bg-zinc-900/30 border border-zinc-800 p-6 rounded-2xl hover:border-emerald-600 transition-all duration-500 flex items-center justify-between shadow-lg">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-12 h-12 rounded-xl bg-emerald-900/10 border border-emerald-900/30 flex items-center justify-center text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-all">
+                                    <i class="ri-add-box-line text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[9px] font-black text-zinc-500 uppercase tracking-[0.2em]">Academic
+                                        Vault</p>
+                                    <h4 class="text-sm font-bold text-zinc-200">Archive Material</h4>
+                                </div>
+                            </div>
+                            <i
+                                class="ri-arrow-right-s-line text-zinc-700 group-hover:text-emerald-500 transition-colors"></i>
+                        </a>
+
+                        <a href="/history"
+                            class="group bg-zinc-900/30 border border-zinc-800 p-6 rounded-2xl hover:border-yellow-600 transition-all duration-500 flex items-center justify-between shadow-lg">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-12 h-12 rounded-xl bg-yellow-900/10 border border-yellow-900/30 flex items-center justify-center text-yellow-600 group-hover:bg-yellow-600 group-hover:text-white transition-all">
+                                    <i class="ri-history-line text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[9px] font-black text-zinc-500 uppercase tracking-[0.2em]">Historical
+                                        Registry</p>
+                                    <h4 class="text-sm font-bold text-zinc-200">Update Chronicles</h4>
+                                </div>
+                            </div>
+                            <i
+                                class="ri-arrow-right-s-line text-zinc-700 group-hover:text-yellow-500 transition-colors"></i>
                         </a>
                     </div>
-                </div>
+                    <div
+                        class="bg-zinc-900/30 border border-zinc-800 rounded-[2.5rem] shadow-2xl overflow-hidden backdrop-blur-sm">
+                        <div
+                            class="p-8 border-b border-zinc-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+                            <div>
+                                <h4 class="text-2xl font-serif italic text-white">Registry Activity</h4>
+                                <p class="text-[10px] text-zinc-500 uppercase tracking-widest mt-1">Latest Resident
+                                    Submissions</p>
+                            </div>
+                            <a href="/admin/complaints"
+                                class="text-red-500 text-[9px] font-black uppercase tracking-[0.2em] border border-red-500/20 px-4 py-2 rounded-full hover:bg-red-500 hover:text-white transition-all">
+                                Open Full Archives <i class="ri-arrow-right-up-line"></i>
+                            </a>
+                        </div>
 
-                <div class="bg-zinc-900 rounded-xl shadow-2xl border border-zinc-800 overflow-hidden">
-                    <div class="p-5 md:p-8 border-b border-zinc-800 flex justify-between items-center">
-                        <h4 class="text-xl md:text-2xl text-white italic">Recent Complaints</h4>
-                        <a href="/admin/complaints"
-                            class="text-red-600 text-[10px] font-bold hover:text-white uppercase tracking-widest font-sans transition-colors">View
-                            All</a>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr
+                                        class="bg-zinc-950/50 text-zinc-500 text-[9px] uppercase font-black tracking-[0.3em]">
+                                        <th class="p-6">Resident Identity</th>
+                                        <th class="p-6">Location</th>
+                                        <th class="p-6">Domain</th>
+                                        <th class="p-6 text-right">Operational Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm font-sans divide-y divide-zinc-800/50">
+                                    <% if(complaints.length> 0) { %>
+                                        <% complaints.forEach(c=> { %>
+                                            <tr class="hover:bg-zinc-800/30 transition-colors cursor-pointer group"
+                                                onclick="window.location='/admin/complaints/<%= c._id %>'">
+                                                <td class="p-6">
+                                                    <p
+                                                        class="font-bold text-zinc-200 group-hover:text-red-500 transition-colors">
+                                                        <%= c.student ? c.student.name : 'System Record' %>
+                                                    </p>
+                                                    <p
+                                                        class="text-[9px] text-zinc-600 uppercase tracking-tighter mt-0.5">
+                                                        Verified Scholar</p>
+                                                </td>
+                                                <td class="p-6 font-mono text-xs text-zinc-500">
+                                                    R-<%= c.roomNumber %>
+                                                </td>
+                                                <td class="p-6">
+                                                    <span
+                                                        class="text-[10px] text-zinc-400 bg-zinc-800/50 px-3 py-1 rounded-lg border border-zinc-800">
+                                                        <%= c.category %>
+                                                    </span>
+                                                </td>
+                                                <td class="p-6 text-right">
+                                                    <span
+                                                        class="px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-tighter
+                                            <%= c.status === 'Pending' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' %>">
+                                                        <%= c.status %>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                                                <% } else { %>
+                                                    <tr>
+                                                        <td colspan="4" class="p-20 text-center">
+                                                            <i
+                                                                class="ri-ghost-line text-5xl text-zinc-800 mb-4 block"></i>
+                                                            <p class="text-zinc-600 font-serif italic">The digital
+                                                                register is currently tranquil.</p>
+                                                        </td>
+                                                    </tr>
+                                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
 
-
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead
-                                class="bg-zinc-950 text-zinc-300 text-[10px] uppercase font-bold tracking-[0.2em] font-sans">
-                                <tr>
-                                    <th class="p-5">Resident Name</th>
-                                    <th class="p-5">Room</th>
-                                    <th class="p-5">Category</th>
-                                    <th class="p-5 text-right">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-sm text-zinc-300 font-sans">
-                                <% if(complaints.length> 0) { %>
-                                    <% complaints.forEach(c=> { %>
-                                        <tr class="border-b border-zinc-800/50 hover:bg-zinc-800/40 transition cursor-pointer"
-                                            onclick="window.location='/admin/complaints/<%= c._id %>'">
-                                            <td class="p-5">
-                                                <span class="font-bold text-white block">
-                                                    <%= c.student ? c.student.name : 'Unknown' %>
-                                                </span>
-                                                <span class="text-[9px] text-zinc-600 uppercase">
-                                                    Resident</span>
-                                            </td>
-                                            <td class="p-5 text-zinc-500 font-mono text-xs">
-                                                <%= c.roomNumber %>
-                                            </td>
-                                            <td class="p-5 text-xs text-zinc-400">
-                                                <%= c.category %>
-                                            </td>
-                                            <td class="p-5 text-right">
-                                                <span
-                                                    class="px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-tighter whitespace-nowrap 
-                                                    <%= c.status === 'Pending' ? 'bg-red-900/20 text-red-500 border border-red-900/50' : 'bg-emerald-900/20 text-emerald-500 border border-emerald-900/50' %>">
-                                                    <%= c.status %>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        <% }) %>
-                                            <% } else { %>
-                                                <tr>
-                                                    <td colspan="4"
-                                                        class="p-16 text-center text-zinc-400 text-xs italic">
-                                                        <i class="ri-inbox-archive-line text-3xl block mb-2"></i>
-                                                        No recent complaints found in the digital register
-                                                    </td>
-                                                </tr>
-                                                <% } %>
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
             </main>
+
+
             <script>
                 function toggleAdminModal() {
                     const modal = document.getElementById('adminModal');
@@ -418,5 +515,4 @@
                     document.body.classList.toggle('overflow-hidden');
                 }
             </script>
-
             <%- include('../partials/footer') %>

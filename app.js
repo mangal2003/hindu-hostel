@@ -1,11 +1,11 @@
+require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const app = express();
 app.set("trust proxy", 1);
 const mongoose = require("mongoose");
 const session = require("express-session");
-const MongoStore = require("connect-mongo");
-require("dotenv").config();
+const { MongoStore } = require("connect-mongo");
 const { isLoggedIn, isAdmin } = require("./middleware/auth");
 const flash = require("connect-flash");
 const passport = require("passport");
@@ -20,6 +20,7 @@ mongoose
   .then(() => console.log("✅ Hindu Hostel Database Connected..."))
   .catch((err) => console.error("❌ DB Error:", err.message));
 
+app.set("trust proxy", 1);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
@@ -31,18 +32,23 @@ app.use(
 );
 app.use(compression());
 
-const sessionMiddleware = session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    secure: false,
-    httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000,
-  },
-});
-
-app.use(sessionMiddleware);
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "hindu-hostel-secret",
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      ttl: 14 * 24 * 60 * 60,
+      autoRemove: "native",
+    }),
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24,
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+    },
+  }),
+);
 
 app.use(flash());
 app.use(passport.initialize());

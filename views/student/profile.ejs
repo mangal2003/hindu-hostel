@@ -2,104 +2,173 @@
     <%- include('../partials/nav') %>
         <%- include('../partials/flash') %>
 
-            <main class="flex-grow bg-stone-950 p-6 md:p-12 text-white">
-                <div class="max-w-4xl mx-auto">
-                    <div class="border-l-4 border-red-700 pl-6 mb-12 flex justify-between items-end">
+            <main class="flex-grow bg-stone-950 p-6 md:p-12 text-white font-sans">
+                <div class="max-w-5xl mx-auto">
 
-
-                        <div>
-                            <h2 class="text-4xl font-serif mb-2">Resident Profile</h2>
-                            <p class="text-zinc-500 uppercase tracking-widest text-xs">Manage your hostel identity</p>
+                    <div class="relative h-56 rounded-[2rem] overflow-hidden mb-12 border border-zinc-800 shadow-2xl">
+                        <img src="/images/hindu-hostel.jpg"
+                            class="w-full h-full object-cover opacity-20 grayscale scale-110 hover:scale-100 hover:grayscale-0 transition-all duration-1000" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent">
                         </div>
-                        <a href="/student/dashboard" class="text-red-500 hover:text-white transition-colors text-sm">
-                            <i class="ri-arrow-left-line"></i> Back
+
+                        <div class="absolute bottom-8 left-8 flex items-center gap-6">
+                            <div
+                                class="w-20 h-20 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center shadow-xl">
+                                <i class="ri-user-star-line text-4xl text-emerald-600"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-4xl font-serif italic font-bold mb-1">
+                                    <%= user.name %>
+                                </h2>
+                                <div class="flex items-center gap-3">
+                                    <span
+                                        class="text-emerald-500 uppercase tracking-[0.3em] text-[10px] font-bold">Resident</span>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <a href="javascript:void(0)" onclick="history.back()"
+                            class="group text-zinc-500 hover:text-white transition-all text-[11px] font-bold uppercase tracking-[0.2em] flex items-center gap-2">
+                            <i class="ri-arrow-left-line group-hover:-translate-x-1 transition-transform"></i>
+                            <span>Back</span>
                         </a>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-                        <div class="md:col-span-1">
-                            <div class="bg-zinc-900 border border-zinc-400 rounded-2xl overflow-hidden shadow-2xl">
-                                <div
-                                    class="h-24 bg-red-900/30 flex items-center justify-center border-b border-zinc-800">
-                                    <i class="ri-user-star-line text-4xl text-red-600"></i>
-                                </div>
-                                <div class="p-6 text-center">
-                                    <h3 class="text-xl font-bold text-white mb-1">
-                                        <%= user.name %>
-                                    </h3>
-                                    <p class="text-zinc-400 text-xs uppercase tracking-widest mb-4">Resident ID: <%=
-                                            user._id.toString().slice(-8) %>
-                                    </p>
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-                                    <div class="bg-stone-950 rounded-lg p-4 space-y-3 text-left border border-zinc-800">
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-[10px] text-zinc-400 uppercase">Room No</span>
-                                            <span class="text-sm font-bold text-red-600">
-                                                <%= user.roomNumber %>
-                                            </span>
+                        <div class="lg:col-span-4 space-y-6">
+                            <div
+                                class="bg-zinc-900/50 border border-zinc-800 rounded-[2rem] overflow-hidden shadow-2xl backdrop-blur-sm">
+                                <div class="p-8">
+                                    <p
+                                        class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-6 border-b border-zinc-800 pb-2">
+                                        Institutional Data</p>
+
+                                    <div class="space-y-6">
+                                        <div>
+                                            <label
+                                                class="block text-[9px] text-zinc-500 uppercase mb-1 tracking-widest font-bold">Registration
+                                                ID</label>
+                                            <p class="text-zinc-300 font-mono text-xs uppercase">
+                                                <%= user._id.toString().slice(-12) %>
+                                            </p>
                                         </div>
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-[10px] text-zinc-400 uppercase">Join Date</span>
-                                            <span class="text-sm text-zinc-300 whitespace-nowrap">
-                                                <%= user.createdAt.toDateString() %>
-                                            </span>
+
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div class="bg-zinc-950/50 p-4 rounded-xl border border-zinc-800">
+                                                <span class="block text-[8px] text-zinc-500 uppercase mb-1">Room
+                                                    No.</span>
+                                                <span class="text-lg font-serif italic text-emerald-500">
+                                                    <%= user.roomNumber %>
+                                                </span>
+                                            </div>
+                                            <div class="bg-zinc-950/50 p-4 rounded-xl border border-zinc-800">
+                                                <span
+                                                    class="block text-[8px] text-zinc-500 uppercase mb-1">Status</span>
+                                                <span class="text-xs font-bold text-zinc-300 uppercase">Active</span>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label
+                                                class="block text-[9px] text-zinc-500 uppercase mb-1 tracking-widest font-bold">Member
+                                                Since</label>
+                                            <p class="text-sm text-zinc-300 font-serif italic">
+                                                <%= user.createdAt.toLocaleDateString('en-GB', { month: 'long' ,
+                                                    year: 'numeric' }) %>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-8 flex justify-center">
+                                        <div
+                                            class="px-6 py-2 rounded-full border border-emerald-900/30 bg-emerald-900/10 flex items-center gap-3">
+                                            <i class="ri-shield-check-line text-emerald-500"></i>
+                                            <span
+                                                class="text-[9px] font-bold text-emerald-500 uppercase tracking-widest">System
+                                                Authenticated</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="md:col-span-2 space-y-6">
+                        <div class="lg:col-span-8 space-y-6">
 
-                            <div class="bg-zinc-900 border border-zinc-800 p-8 rounded-xl">
+                            <div
+                                class="bg-zinc-900/50 border border-zinc-800 p-8 rounded-[2rem] shadow-xl backdrop-blur-sm">
                                 <h4
-                                    class="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-6 flex items-center gap-2">
-                                    <i class="ri-fingerprint-line text-red-600 text-[1.5rem]"></i> Permanent Records
+                                    class="text-xs font-bold text-zinc-400 uppercase tracking-[0.3em] mb-8 flex items-center gap-3">
+                                    <i class="ri-fingerprint-line text-emerald-600"></i> Permanent Records
                                 </h4>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                    <div>
-                                        <label class="block text-[10px] text-zinc-400 uppercase mb-1">Email
-                                            Address</label>
-                                        <p class="text-zinc-200 font-bold font-sans text-sm">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                                    <div class="group">
+                                        <label
+                                            class="block text-[9px] text-zinc-500 uppercase mb-2 tracking-widest font-bold">Primary
+                                            Email</label>
+                                        <div
+                                            class="bg-stone-950 border border-zinc-800 p-4 rounded-xl text-zinc-200 text-sm font-bold">
                                             <%= user.email %>
-                                        </p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <label class="block text-[10px] text-zinc-400 uppercase mb-1">Enrollment
+                                    <div class="group">
+                                        <label
+                                            class="block text-[9px] text-zinc-500 uppercase mb-2 tracking-widest font-bold">Enrollment
                                             Number</label>
-                                        <p class="text-zinc-200 font-bold font-sans text-sm">
+                                        <div
+                                            class="bg-stone-950 border border-zinc-800 p-4 rounded-xl text-zinc-200 text-sm font-bold">
                                             <%= user.enrollmentNumber %>
-                                        </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="bg-zinc-900 border border-zinc-800 p-8 rounded-xl">
+                            <div
+                                class="bg-zinc-900/50 border border-zinc-800 p-8 rounded-[2rem] shadow-xl backdrop-blur-sm">
                                 <h4
-                                    class="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-6 flex items-center gap-2">
-                                    <i class="ri-lock-password-line text-red-600 text-[1.5rem]"></i> Security
-                                    Credentials
+                                    class="text-xs font-bold text-zinc-400 uppercase tracking-[0.3em] mb-8 flex items-center gap-3">
+                                    <i class="ri-lock-password-line text-red-600"></i> Security Credentials
                                 </h4>
 
-                                <form action="/student/update-password" method="POST" class="space-y-4">
-                                    <div class="grid grid-cols-1 gap-4">
-                                        <input type="password" name="oldPassword" placeholder="Current Password"
-                                            required
-                                            class="w-full bg-stone-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-red-700 outline-none transition-all text-sm">
+                                <form action="/student/update-password" method="POST" class="space-y-6">
+                                    <div class="max-w-md">
+                                        <label
+                                            class="block text-[9px] text-zinc-500 uppercase mb-2 tracking-widest font-bold">Current
+                                            Password</label>
+                                        <input type="password" name="oldPassword" required
+                                            class="w-full bg-stone-950 border border-zinc-800 rounded-xl p-4 text-white focus:border-red-700 outline-none transition-all text-sm placeholder:text-zinc-800">
+                                    </div>
 
-                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                            <input type="password" name="newPassword" placeholder="New Password"
-                                                required
-                                                class="w-full bg-stone-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-red-700 outline-none transition-all text-sm">
-                                            <input type="password" name="confirmPassword"
-                                                placeholder="Confirm New Password" required
-                                                class="w-full bg-stone-950 border border-zinc-800 rounded-lg p-3 text-white focus:border-red-700 outline-none transition-all text-sm">
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                        <div>
+                                            <label
+                                                class="block text-[9px] text-zinc-500 uppercase mb-2 tracking-widest font-bold">New
+                                                Password</label>
+                                            <input type="password" name="newPassword" required
+                                                class="w-full bg-stone-950 border border-zinc-800 rounded-xl p-4 text-white focus:border-red-700 outline-none transition-all text-sm">
+                                        </div>
+                                        <div>
+                                            <label
+                                                class="block text-[9px] text-zinc-500 uppercase mb-2 tracking-widest font-bold">Confirm
+                                                New Password</label>
+                                            <input type="password" name="confirmPassword" required
+                                                class="w-full bg-stone-950 border border-zinc-800 rounded-xl p-4 text-white focus:border-red-700 outline-none transition-all text-sm">
                                         </div>
                                     </div>
-                                    <button type="submit"
-                                        class="bg-red-700 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-lg transition-all tracking-widest text-xs">
-                                        UPDATE PASSWORD
-                                    </button>
+
+                                    <div class="flex flex-col sm:flex-row items-center gap-4 pt-4">
+                                        <button type="submit"
+                                            class="w-full sm:w-auto bg-emerald-700 hover:bg-emerald-600 text-white font-bold py-4 px-10 rounded-xl transition-all tracking-[0.2em] text-[10px] uppercase shadow-lg shadow-emerald-900/20">
+                                            Change Password
+                                        </button>
+                                        <a href="/forgot-password"
+                                            class="text-[10px] text-zinc-500 hover:text-red-500 transition-colors uppercase font-bold tracking-widest underline decoration-zinc-800 underline-offset-8">
+                                            Reset via Email
+                                        </a>
+                                    </div>
                                 </form>
                             </div>
 

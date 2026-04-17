@@ -12,18 +12,77 @@ const Event = require("../models/Event");
 const fs = require("fs");
 const Announcement = require("../models/Announcement");
 const Resource = require("../models/Resource");
+const Scholar = require("../models/Scholar");
+const Essential = require("../models/Essential");
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
-const storage = multer.diskStorage({
-  destination: "./public/images/events",
-  filename: (req, file, cb) => {
-    cb(null, "hostel-event-" + Date.now() + path.extname(file.originalname));
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "hindu_hostel_events",
+    format: "jpg",
   },
 });
 
-const upload = multer({
-  storage,
-  limits: { fileSize: 5000000 },
-}).array("images", 10);
+const upload = multer({ storage });
+
+router.get("/essentials/new", isLoggedIn, isAdmin, (req, res) => {
+  res.render("admin/new-essential", { title: "Register Essential Service" });
+});
+
+router.post("/essentials/new", isLoggedIn, isAdmin, async (req, res) => {
+  try {
+    const newService = new Essential(req.body);
+    await newService.save();
+    req.flash("success_msg", "New essential service added to the directory.");
+    res.redirect("/helpdesk");
+  } catch (err) {
+    req.flash("error_msg", "Failed to add service.");
+    res.redirect("back");
+  }
+});
+
+router.post("/essentials/delete/:id", isLoggedIn, isAdmin, async (req, res) => {
+  await Essential.findByIdAndDelete(req.params.id);
+  req.flash("success_msg", "Service removed from directory.");
+  res.redirect("/helpdesk");
+});
+
+router.get("/scholars/new", isLoggedIn, isAdmin, (req, res) => {
+  res.render("admin/new-scholar", { title: "Add Eminent Scholar" });
+});
+
+router.post("/scholars/new", isLoggedIn, isAdmin, async (req, res) => {
+  try {
+    const { name, role, tag, era } = req.body;
+    const newScholar = new Scholar({
+      name: name.trim(),
+      role: role.trim(),
+      tag: tag.trim(),
+      era: era.trim(),
+      uploadedBy: req.user._id,
+    });
+    await newScholar.save();
+    req.flash("success_msg", `${name} added to the Hall of Eminence.`);
+    res.redirect("/history");
+  } catch (err) {
+    req.flash("error_msg", "Failed to add scholar record.");
+    res.redirect("back");
+  }
+});
+
+router.post("/scholars/delete/:id", isLoggedIn, isAdmin, async (req, res) => {
+  await Scholar.findByIdAndDelete(req.params.id);
+  req.flash("success_msg", "Scholar removed from archives.");
+  res.redirect("/history");
+});
 
 router.post("/announcements/new", isLoggedIn, isAdmin, async (req, res) => {
   try {
@@ -46,9 +105,37 @@ router.post("/announcements/new", isLoggedIn, isAdmin, async (req, res) => {
   }
 });
 
+router.post(
+  "/announcements/delete/:id",
+  isLoggedIn,
+  isAdmin,
+  async (req, res) => {
+    try {
+      await Announcement.findByIdAndDelete(req.params.id);
+      req.flash(
+        "success_msg",
+        "Announcement retracted from the Bulletin Board.",
+      );
+      res.redirect("/");
+    } catch (err) {
+      console.error("Deletion Error:", err);
+      req.flash("error_msg", "Failed to retract announcement.");
+      res.redirect("/");
+    }
+  },
+);
+
 router.get("/resources/new", isLoggedIn, isAdmin, (req, res) => {
   res.render("admin/new-resource", { title: "Dispatch Academic Material" });
 });
+
+const parseLinks = (data) => {
+  if (!data) return [];
+  return data
+    .split(",")
+    .map((link) => link.trim())
+    .filter((link) => link.length > 0);
+};
 
 router.post("/resources/new", isLoggedIn, isAdmin, async (req, res) => {
   try {
@@ -56,24 +143,58 @@ router.post("/resources/new", isLoggedIn, isAdmin, async (req, res) => {
 
     const newResource = new Resource({
       subject: subject.trim(),
-      studyMaterial: studyMaterial || null,
-      resources: resources || null,
-      previousPapers: previousPapers || null,
+      studyMaterial: parseLinks(studyMaterial),
+      resources: parseLinks(resources),
+      previousPapers: parseLinks(previousPapers),
+      uploadedBy: req.user._id,
     });
 
     await newResource.save();
-    req.flash(
-      "success_msg",
-      `Subject: ${subject} has been added to the Vault.`,
-    );
+    req.flash("success_msg", `Subject: ${subject} added to the Vault.`);
     res.redirect("/admin/dashboard");
   } catch (err) {
-    if (err.code === 11000) {
-      req.flash("error_msg", "This subject already exists in the Vault.");
-    } else {
-      req.flash("error_msg", "Failed to archive subject material.");
-    }
+    console.error(err);
+    req.flash("error_msg", "Failed to archive subject material.");
     res.redirect("back");
+  }
+});
+
+router.get("/resources/edit/:id", isLoggedIn, isAdmin, async (req, res) => {
+  try {
+    const resource = await Resource.findById(req.params.id);
+    const formattedResource = {
+      ...resource._doc,
+      studyMaterial: resource.studyMaterial.join(", "),
+      resources: resource.resources.join(", "),
+      previousPapers: resource.previousPapers.join(", "),
+    };
+
+    res.render("admin/edit-resource", {
+      title: "Update Subject",
+      resource: formattedResource,
+    });
+  } catch (err) {
+    req.flash("error_msg", "Resource not found.");
+    res.redirect("/student/academic-vault");
+  }
+});
+
+router.post("/resources/edit/:id", isLoggedIn, isAdmin, async (req, res) => {
+  try {
+    const { subject, studyMaterial, resources, previousPapers } = req.body;
+
+    await Resource.findByIdAndUpdate(req.params.id, {
+      subject: subject.trim(),
+      studyMaterial: parseLinks(studyMaterial),
+      resources: parseLinks(resources),
+      previousPapers: parseLinks(previousPapers),
+    });
+
+    req.flash("success_msg", "Academic records updated.");
+    res.redirect("/student/academic-vault");
+  } catch (err) {
+    req.flash("error_msg", "Update failed.");
+    res.redirect("/student/academic-vault");
   }
 });
 
@@ -87,47 +208,20 @@ router.post("/resources/delete/:id", isLoggedIn, isAdmin, async (req, res) => {
     res.redirect("/student/academic-vault");
   }
 });
-router.get("/resources/edit/:id", isLoggedIn, isAdmin, async (req, res) => {
-  try {
-    const resource = await Resource.findById(req.params.id);
-    res.render("admin/edit-resource", { title: "Update Subject", resource });
-  } catch (err) {
-    res.redirect("/student/academic-vault");
-  }
-});
-
-router.post("/resources/edit/:id", isLoggedIn, isAdmin, async (req, res) => {
-  try {
-    const { subject, studyMaterial, resources, previousPapers } = req.body;
-    await Resource.findByIdAndUpdate(req.params.id, {
-      subject: req.body.subject,
-      studyMaterial: req.body.studyMaterial || null,
-      resources: req.body.resources || null,
-      previousPapers: req.body.previousPapers || null,
-    });
-    req.flash("success_msg", "Academic records updated.");
-    res.redirect("/student/academic-vault");
-  } catch (err) {
-    req.flash("error_msg", "Update failed.");
-    res.redirect("/student/academic-vault");
-  }
-});
 
 router.get("/events/new", isLoggedIn, isWarden, (req, res) => {
   res.render("admin/new-event", { title: "New Chronicle Entry" });
 });
 
-router.post("/events/new", isLoggedIn, isAdmin, (req, res) => {
-  upload(req, res, async (err) => {
-    if (err) return res.send("Error uploading files.");
-
+router.post(
+  "/events/new",
+  isLoggedIn,
+  isAdmin,
+  upload.array("images", 10),
+  async (req, res) => {
     try {
       const { title, description, winners, chiefGuests } = req.body;
-
-      const imagePaths = req.files.map(
-        (file) => `/images/events/${file.filename}`,
-      );
-
+      const imagePaths = req.files.map((file) => file.path);
       const newEvent = new Event({
         title,
         description,
@@ -139,14 +233,14 @@ router.post("/events/new", isLoggedIn, isAdmin, (req, res) => {
       });
 
       await newEvent.save();
-      req.flash("success_msg", "Event archived in History.");
+      req.flash("success_msg", "Event archived permanently in the Cloud.");
       res.redirect("/hostel-events");
     } catch (error) {
-      console.log(error);
+      req.flash("error_msg", `Upload Failed: ${error.message}`);
       res.redirect("back");
     }
-  });
-});
+  },
+);
 
 router.get("/events/edit/:id", isLoggedIn, isAdmin, async (req, res) => {
   const event = await Event.findById(req.params.id);
@@ -175,13 +269,13 @@ router.post("/events/delete/:id", isLoggedIn, isAdmin, async (req, res) => {
   try {
     const event = await Event.findById(req.params.id);
 
-    event.images.forEach((img) => {
-      const filePath = `./public${img}`;
-      if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-    });
+    for (let imageUrl of event.images) {
+      const publicId = imageUrl.split("/").pop().split(".")[0];
+      await cloudinary.uploader.destroy(`hindu_hostel_events/${publicId}`);
+    }
 
     await Event.findByIdAndDelete(req.params.id);
-    req.flash("success_msg", "Event removed from history.");
+    req.flash("success_msg", "Event and Cloud media purged.");
     res.redirect("/hostel-events");
   } catch (err) {
     res.redirect("/hostel-events");

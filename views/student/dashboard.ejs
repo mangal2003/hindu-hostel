@@ -2,45 +2,107 @@
     <%- include('../partials/nav') %>
         <%- include('../partials/flash') %>
 
-            <main class="flex-grow bg-stone-950 p-4 md:p-12 text-white">
-                <div class="max-w-4xl mx-auto">
-                    <div class="border-l-4 border-red-700 pl-6 mb-12">
-                        <h2 class="text-4xl font-serif mb-2">Welcome, <%= user.name %>
-                        </h2>
-                        <div class="flex gap-2 text-zinc-400 text-sm uppercase tracking-widest flex-wrap">
-                            <span style="display: block;"><i class="ri-door-open-line text-red-600"></i>Room: <%=
-                                    user.roomNumber %></span>
-                            <span style="display: block;"><i class="ri-shield-user-line text-red-600"></i>
-                                Status: Resident</span>
+            <main class="flex-grow bg-stone-950 p-6 md:p-12 text-white font-sans">
+                <div class="max-w-5xl mx-auto">
+                    <header class="relative mb-12 animate-in fade-in slide-in-from-left-8 duration-700">
+                        <div class="border-l-4 border-red-700 pl-6">
+                            <p class="text-zinc-500 text-[10px] font-bold uppercase tracking-[0.4em] mb-2">Resident
+                                Command Center
+                            </p>
+                            <h2 class="text-4xl md:text-5xl font-serif mb-4 italic">
+                                <% const hour=new Date().getHours(); let greeting; if (hour>= 5 && hour < 12) {
+                                        greeting="Good Morning" ; } else if (hour>= 12 && hour < 17) {
+                                            greeting="Good Afternoon" ; } else if (hour>= 17 && hour < 21) {
+                                                greeting="Good Evening" ; } else if (hour>= 21 || hour < 1) {
+                                                    greeting="Good Evening" ; } else { greeting="The Night is Quiet" ; }
+                                                    %>
+                                                    <i class="<%= 
+                                                            (hour >= 5 && hour < 19) ? 'ri-sun-cloudy-line text-yellow-500' : 'ri-moon-clear-line text-blue-400' 
+                                                        %> text-3xl"></i>
+                                                    <%= greeting %>, <%= user.name.split(' ')[0] %>
+                            </h2>
+                        
+                        <div class="flex gap-4 text-zinc-400 text-[11px] uppercase tracking-widest flex-wrap">
+                            <span class="flex items-center gap-2 bg-zinc-900/50 px-3 py-1 rounded-full border border-zinc-800">
+                                <i class="ri-door-open-line text-red-600"></i> Room <%= user.roomNumber %>
+                            </span>
+                            <span class="flex items-center gap-2 bg-zinc-900/50 px-3 py-1 rounded-full border border-zinc-800">
+                                <i class="ri-shield-check-line text-emerald-500"></i> Verified Resident
+                            </span>
                         </div>
                     </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <a href="/student/complaints"
-                            class="bg-zinc-900 border border-zinc-800 p-8 rounded-xl hover:border-red-700 hover:bg-zinc-800 transition-all duration-300 group">
-                            <div
-                                class="w-12 h-12 bg-red-900/20 rounded-lg flex items-center justify-center mb-4 group-hover:bg-red-700 transition-colors">
-                                <i class="ri-tools-line text-red-600 text-2xl group-hover:text-white"></i>
-                            </div>
-                            <h4 class="text-xl font-bold mb-2">File a Complaint</h4>
-                            <p class="text-zinc-500 text-sm">Report issues with electricity, plumbing, or mess
-                                facilities
-                                directly to the warden.</p>
-                        </a>
-
-                        <a href="/student/profile"
-                            class="bg-zinc-900 border border-zinc-800 p-8 rounded-xl hover:border-red-700 hover:bg-zinc-800 transition-all duration-300 group">
-                            <div
-                                class="w-12 h-12 bg-red-900/20 rounded-lg flex items-center justify-center mb-4 group-hover:bg-red-700 transition-colors">
-                                <i class="ri-user-settings-line text-red-600 text-2xl group-hover:text-white"></i>
-                            </div>
-                            <h4 class="text-xl font-bold mb-2">My Profile</h4>
-                            <p class="text-zinc-500 text-sm">Update your contact information or change your portal
-                                password.
-                            </p>
-                        </a>
-                    </div>
+                </header>
+        
+                <div class="mb-8 flex justify-between items-center">
+                <a href="javascript:void(0)" onclick="history.back()"
+                    class="group text-zinc-500 hover:text-white transition-all text-[11px] font-sans font-bold uppercase tracking-[0.2em] flex items-center gap-2">
+                    <i class="ri-arrow-left-line group-hover:-translate-x-1 transition-transform"></i>
+                    <span>Back</span>
+                </a>
                 </div>
-            </main>
+        
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <a href="/student/complaints"
+                        class="relative bg-zinc-900/40 border border-zinc-800 p-8 rounded-2xl hover:border-red-700 hover:bg-zinc-900 transition-all duration-500 group overflow-hidden">
+                        <div class="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                            <i class="ri-tools-line text-8xl text-white"></i>
+                        </div>
+                        
+                        <div class="w-14 h-14 bg-red-900/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-red-700 transition-all duration-500">
+                            <i class="ri-tools-line text-red-600 text-2xl group-hover:text-white"></i>
+                        </div>
+                        
+                        <h4 class="text-xl font-bold mb-3">Residential Helpdesk</h4>
+                        <p class="text-zinc-500 text-sm leading-relaxed mb-4">
+                            Encountered a technical snag? Log issues regarding plumbing, electricity, or amenities.
+                        </p>
+                        <span class="text-[10px] font-bold text-red-500 uppercase tracking-widest flex items-center gap-2">
+                            Open Tickets <i class="ri-arrow-right-s-line"></i>
+                        </span>
+                    </a>
+        
+                    <a href="/student/academic-vault"
+                        class="relative bg-zinc-900/40 border border-zinc-800 p-8 rounded-2xl hover:border-blue-700 hover:bg-zinc-900 transition-all duration-500 group overflow-hidden">
+                        <div class="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                            <i class="ri-book-open-line text-8xl text-white"></i>
+                        </div>
+                        
+                        <div class="w-14 h-14 bg-blue-900/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-700 transition-all duration-500">
+                            <i class="ri-book-open-line text-blue-600 text-2xl group-hover:text-white"></i>
+                        </div>
+                        
+                        <h4 class="text-xl font-bold mb-3">Academic Vault</h4>
+                        <p class="text-zinc-500 text-sm leading-relaxed mb-4">
+                            Access high-priority study materials, previous year papers, and curated library resources.
+                        </p>
+                        <span class="text-[10px] font-bold text-blue-500 uppercase tracking-widest flex items-center gap-2">
+                            Enter Vault <i class="ri-arrow-right-s-line"></i>
+                        </span>
+                    </a>
+        
+                    <a href="/student/profile"
+                        class="relative bg-zinc-900/40 border border-zinc-800 p-8 rounded-2xl hover:border-emerald-700 hover:bg-zinc-900 transition-all duration-500 group overflow-hidden">
+                        <div class="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                            <i class="ri-user-settings-line text-8xl text-white"></i>
+                        </div>
+                        
+                        <div class="w-14 h-14 bg-emerald-900/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-emerald-700 transition-all duration-500">
+                            <i class="ri-user-settings-line text-emerald-500 text-2xl group-hover:text-white"></i>
+                        </div>
+                        
+                        <h4 class="text-xl font-bold mb-3">Profile Identity</h4>
+                        <p class="text-zinc-500 text-sm leading-relaxed mb-4">
+                            Manage your residential credentials, update contact records, and reinforce account security.
+                        </p>
+                        <span class="text-[10px] font-bold text-emerald-500 uppercase tracking-widest flex items-center gap-2">
+                            Manage Profile <i class="ri-arrow-right-s-line"></i>
+                        </span>
+                    </a>
+                </div>
+        
+                
+            </div>
+        </main>
 
-            <%- include('../partials/footer') %>
+<%- include("../partials/footer") %>

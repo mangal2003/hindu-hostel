@@ -5,7 +5,11 @@
             <div class="max-w-2xl mx-auto">
                 <h2 class="text-3xl mb-8">Refine Chronicle: <%= event.title %>
                 </h2>
-
+                <a href="javascript:void(0)" onclick="history.back()"
+                    class="group text-zinc-500 hover:text-white transition-all text-[11px] font-sans font-bold uppercase tracking-[0.2em] flex items-center gap-2 mb-6">
+                    <i class="ri-arrow-left-line group-hover:-translate-x-1 transition-transform"></i>
+                    <span>Back</span>
+                </a>
                 <form action="/admin/events/edit/<%= event._id %>" method="POST"
                     class="bg-zinc-900 p-8 rounded-xl border border-zinc-800 space-y-6">
                     <div>

@@ -4,12 +4,13 @@ const resourceSchema = new mongoose.Schema({
   subject: {
     type: String,
     required: true,
-    unique: true,
     trim: true,
   },
-  studyMaterial: { type: String, default: null },
-  resources: { type: String, default: null },
-  previousPapers: { type: String, default: null },
+  studyMaterial: { type: [String], default: [] },
+  resources: { type: [String], default: [] },
+  previousPapers: { type: [String], default: [] },
+
+  uploadedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   createdAt: { type: Date, default: Date.now },
 });
 
