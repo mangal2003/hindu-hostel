@@ -15,11 +15,22 @@
                             <div class="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></div>
                             <span id="liveClock"
                                 class="text-[10px] font-mono font-bold text-zinc-400 tracking-widest uppercase text-center">Loading
-                                Hub Time...</span>
+                                Hub
+                                Time...</span>
                         </div>
-                        <h1 class="text-4xl md:text-5xl italic tracking-tighter mb-4 text-white"><i
-                                class="ri-heart-add-line"></i> Helpdesk</h1>
-                        <p class="text-emerald-500 font-sans font-black tracking-[0.4em] text-[10px] uppercase">
+
+                        <h1 class="text-4xl md:text-5xl italic tracking-tighter mb-4 text-white">
+                            <i class="ri-heart-add-line"></i> Helpdesk
+                        </h1>
+
+                        <div class="max-w-md mx-auto mt-8 relative group">
+                            <i
+                                class="ri-search-line absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-emerald-500 transition-colors"></i>
+                            <input type="text" id="serviceSearch" placeholder="Search for services..."
+                                class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl py-3 pl-12 pr-4 text-sm text-white focus:border-emerald-600 outline-none transition-all placeholder:text-zinc-500 shadow-2xl">
+                        </div>
+
+                        <p class="text-emerald-500 font-sans font-black tracking-[0.4em] text-[10px] uppercase mt-6">
                             Critical Essentials & Emergency Contacts
                         </p>
                     </div>
@@ -35,8 +46,10 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <% if (essentials && essentials.length> 0) { %>
                             <% essentials.forEach(service=> { %>
-                                <div
-                                    class="relative bg-zinc-900/40 border border-zinc-800 p-8 rounded-[2rem] hover:bg-zinc-900 hover:border-zinc-700 transition-all duration-500 group shadow-2xl flex flex-col h-full">
+
+
+                                <div class="service-card relative bg-zinc-900/40 border border-zinc-800 p-8 rounded-[2rem] hover:bg-zinc-900 hover:border-zinc-700 transition-all duration-500 group shadow-2xl flex flex-col h-full"
+                                    data-name="<%= service.name.toLowerCase() %>">
 
                                     <div class="flex justify-between items-start mb-8">
                                         <span
@@ -112,6 +125,7 @@
                                             <% } %>
                                     </div>
                                 </div>
+
                                 <% }) %>
                                     <% } else { %>
                                         <div
@@ -141,6 +155,36 @@
                 }
                 setInterval(updateClock, 1000);
                 updateClock();
+
+                document.getElementById('serviceSearch').addEventListener('input', function (e) {
+                    const searchTerm = e.target.value.toLowerCase();
+                    const cards = document.querySelectorAll('.service-card');
+                    let foundAny = false;
+
+                    cards.forEach(card => {
+                        const serviceName = card.getAttribute('data-name');
+
+                        if (serviceName.includes(searchTerm)) {
+                            card.style.display = 'flex';
+                            foundAny = true;
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+
+                    const emptyState = document.getElementById('emptySearchState');
+                    if (!foundAny && searchTerm !== "") {
+                        if (!emptyState) {
+                            const msg = document.createElement('div');
+                            msg.id = 'emptySearchState';
+                            msg.className = 'col-span-full py-10 text-center text-zinc-500 italic text-sm';
+                            msg.innerHTML = '<i class="ri-search-eye-line text-2xl block mb-2"></i> No services found matching your search.';
+                            document.querySelector('.grid').appendChild(msg);
+                        }
+                    } else if (emptyState) {
+                        emptyState.remove();
+                    }
+                });
             </script>
 
             <%- include('partials/footer') %>
