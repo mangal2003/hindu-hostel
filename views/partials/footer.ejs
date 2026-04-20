@@ -1,18 +1,109 @@
-<footer class="p-8 bg-zinc-900 text-center text-xs border-t-2 border-red mt-auto">
-    <div class="max-w-4xl mx-auto pb-10 text-center">
-        <div class="flex items-center justify-center gap-4 mb-4">
-            <span class="h-[1px] w-12 bg-zinc-700"></span>
-            <i class="ri-government-line text-zinc-400 text-lg"></i>
-            <span class="h-[1px] w-12 bg-zinc-700"></span>
-        </div>
-        <p class="text-zinc-400 text-[9px] uppercase tracking-[0.4em] font-sans font-bold">
-            Curated & Architected by the Residents of <span class="text-red-400">Hindu Hostel</span>
-        </p>
+<footer class="relative bg-zinc-950 border-t border-zinc-900 pt-20 overflow-hidden">
+    <div
+        class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1000px] h-[300px] bg-red-950/10 blur-[120px] rounded-full pointer-events-none">
     </div>
-    <p>HINDU HOSTEL | ESTD. 1901</p>
-    <p class="mt-2 text-red-500 font-bold uppercase tracking-widest">University of Allahabad <br> Prayagraj, Uttar
-        Pradesh</p>
+
+    <div class="max-w-6xl mx-auto px-6 mb-24">
+        <div
+            class="relative group bg-zinc-900/10 border border-zinc-800 rounded-[3rem] p-8 md:p-12 overflow-hidden transition-all duration-700 hover:border-emerald-900/40 hover:bg-zinc-900/20 shadow-2xl">
+
+            <div
+                class="absolute -bottom-24 -left-24 w-64 h-64 bg-emerald-600/5 rounded-full blur-[100px] group-hover:bg-emerald-600/10 transition-all duration-700">
+            </div>
+
+            <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10">
+                <div class="max-w-xl text-center lg:text-left">
+                    <div class="flex items-center justify-center lg:justify-start gap-3 mb-6">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-zinc-950 border border-zinc-800 flex items-center justify-center text-emerald-500 shadow-2xl group-hover:scale-110 transition-transform">
+                            <i class="ri-git-repository-line text-xl"></i>
+                        </div>
+                        <span class="text-[9px] font-black uppercase tracking-[0.4em] text-zinc-400">Open Source</span>
+                    </div>
+
+                    <h3 class="text-3xl md:text-4xl font-serif italic text-white mb-4 tracking-tighter">Architect the
+                        Future</h3>
+                    <p
+                        class="text-zinc-500 text-sm leading-relaxed font-sans italic group-hover:text-zinc-400 transition-colors">
+                        The Hindu Hostel Digital Portal is open source. We invite resident developers to
+                        contribute to the core architecture, fix anomalies, or suggest new modules.
+                    </p>
+                </div>
+
+                <div class="flex flex-col justify-center items-center sm:flex-row gap-6 w-full lg:w-auto">
+                    <a href="https://github.com/mangal2003/hindu-hostel" target="_blank"
+                        class="flex items-center justify-center gap-3 bg-emerald-600 text-white px-8 py-4 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] hover:bg-emerald-700 transition-all duration-500 shadow-xl group/btn">
+                        <i
+                            class="ri-github-fill text-xl group-hover/btn:rotate-[360deg] transition-transform duration-500"></i>
+                        Contribute on GitHub
+                    </a>
+                    <a href="https://github.com/shivmangal22/hindu-hostel" target="_blank"
+                        class="flex items-center justify-center gap-3 bg-zinc-950/50 border border-emerald-500 text-zinc-400 px-8 py-4 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] hover:bg-emerald-600 hover:text-white transition-all duration-500 shadow-xl group/btn">
+                        <i
+                            class="ri-terminal-box-line text-lg group-hover/btn:text-white transition-transform duration-500"></i>
+                        STABLE VERSION
+                    </a>
+                </div>
+            </div>
+
+            <div
+                class="mt-12 pt-8 border-t border-zinc-800/30 flex flex-wrap justify-center lg:justify-start gap-8 duration-700">
+                <div class="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-zinc-400">
+                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                    Node.js/EJS Environment
+                </div>
+                <div class="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-zinc-400">
+                    <i class="ri-git-branch-line text-emerald-500"></i>
+                    Branch: Main
+                </div>
+                <div class="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-zinc-400">
+                    <i class="ri-shield-check-line text-emerald-500"></i>
+                    Architected by Residents
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-zinc-950 border-t border-zinc-900/50 py-12 px-6 relative z-10">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 items-center text-center">
+
+                <div class="order-2 md:order-1">
+                    <p class="text-[10px] font-mono text-zinc-600 uppercase tracking-[0.3em]">Foundation</p>
+                    <p class="text-white font-serif italic text-lg mt-1 tracking-widest">Estd. 1901</p>
+                </div>
+
+                <div class="order-1 md:order-2 flex flex-col items-center">
+                    <div class="flex items-center justify-center gap-4 mb-4">
+                        <span class="h-[1px] w-8 bg-zinc-800"></span>
+                        <i class="ri-government-line text-red-600 text-xl"></i>
+                        <span class="h-[1px] w-8 bg-zinc-800"></span>
+                    </div>
+                    <h4 class="text-white font-black text-xs uppercase tracking-[0.5em] mb-2">Hindu Hostel</h4>
+                    <p class="text-[9px] text-zinc-600 uppercase tracking-[0.2em] font-sans font-bold leading-relaxed">
+                        Curated & Architected by the Residents
+                    </p>
+                </div>
+
+                <div class="order-3">
+                    <p class="text-[10px] font-mono text-zinc-600 uppercase tracking-[0.3em]">Location</p>
+                    <p class="text-red-500 font-bold text-xs uppercase tracking-widest mt-1">
+                        University of Allahabad <br>
+                        <span class="text-zinc-500 font-medium">Prayagraj, Uttar Pradesh</span>
+                    </p>
+                </div>
+            </div>
+
+            <div
+                class="mt-16 pt-8 border-t border-zinc-900 flex flex-col md:flex-row justify-between items-center gap-6">
+                <p class="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
+                    &copy; <%= new Date().getFullYear() %> Hindu Hostel. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </div>
 </footer>
+
 <script src="/js/main.js"></script>
 </body>
 
