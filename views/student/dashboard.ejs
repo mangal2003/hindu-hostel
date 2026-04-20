@@ -10,17 +10,19 @@
                                 Dashboard
                             </p>
                             <h2 class="text-4xl md:text-5xl font-serif mb-4 italic">
-                                <% const hour=new Date().getHours(); let greeting; if (hour>= 5 && hour < 12) {
-                                        greeting="Good Morning" ; } else if (hour>= 12 && hour < 17) {
-                                            greeting="Good Afternoon" ; } else if (hour>= 17 && hour < 21) {
-                                                greeting="Good Evening" ; } else if (hour>= 21 || hour < 1) {
-                                                    greeting="Good Evening" ; } else { greeting="The Night is Quiet" ; }
+                                <% const options={ timeZone: 'Asia/Kolkata' , hour: '2-digit' , hour12: false }; const
+                                    hour=parseInt(new Intl.DateTimeFormat('en-US', options).format(new Date())); let
+                                    greeting; if (hour>= 5 && hour < 12) { greeting="Good Morning" ; } else if (hour>=
+                                        12 && hour < 17) { greeting="Good Afternoon" ; } else if (hour>= 17 && hour <
+                                                21) { greeting="Good Evening" ; } else if (hour>= 21 || hour < 4) {
+                                                    greeting="Good Night" ; } else { greeting="The Night is Quiet" ; }
                                                     %>
-                                                    <i class="<%= 
-                                                            (hour >= 5 && hour < 19) ? 'ri-sun-cloudy-line text-yellow-500' : 'ri-moon-clear-line text-blue-400' 
-                                                        %> text-3xl"></i>
+
+                                                    <i
+                                                        class="<%= (hour >= 5 && hour < 18) ? 'ri-sun-cloudy-line text-yellow-500' : 'ri-moon-clear-line text-blue-400' %> text-3xl"></i>
+
                                                     <%= greeting %>, <%= user.name.split(' ')[0] %>
-                            </h2>
+                        </h2>
                         
                         <div class="flex gap-4 text-zinc-400 text-[11px] uppercase tracking-widest flex-wrap">
                             <span class="flex items-center gap-2 bg-zinc-900/50 px-3 py-1 rounded-full border border-zinc-800">
