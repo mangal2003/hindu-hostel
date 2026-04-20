@@ -45,8 +45,9 @@ router.post("/essentials/new", isLoggedIn, isAdmin, async (req, res) => {
     req.flash("success_msg", "New essential service added successfully!");
     res.redirect("/helpdesk");
   } catch (err) {
+    console.error(`Error adding service: ${err}`);
     req.flash("error_msg", "Failed to add service.");
-    res.redirect("back");
+    res.redirect("/helpdesk");
   }
 });
 

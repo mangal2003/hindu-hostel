@@ -5,7 +5,7 @@ const essentialSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    enum: ["Hospital", "Pharmacy", "Stationery", "General Store", "Other"],
+    enum: ["Hospital", "Pharmacy", "Stationery", "General/Mess", "Other"],
   },
   address: { type: String, required: true },
   phone: { type: String, trim: true },
